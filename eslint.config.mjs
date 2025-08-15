@@ -45,7 +45,6 @@ export default defineConfig([
       "no-nested-ternary": "error",
       "no-multi-str": "error",
       "no-multi-assign": "error",
-      "no-magic-numbers": "error",
       "no-loop-func": "error",
       "no-lonely-if": "error",
       "no-lone-blocks": "error",
