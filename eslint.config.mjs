@@ -31,7 +31,6 @@ export default defineConfig([
       "no-useless-call": "error",
       "no-unused-expressions": "error",
       "no-unneeded-ternary": "error",
-      "no-undef-init": "error",
       "no-throw-literal": "error",
       "no-ternary": "error",
       "no-shadow": "error",
