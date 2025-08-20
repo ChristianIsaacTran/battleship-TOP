@@ -17,11 +17,27 @@ watchAll, then the test would automatically run. I would stop the watch with ctr
 This is a projet that combines the javascript logic of battleship with HTML dom elements. We are re-creating a classic game of battleship but with HTML, CSS, and javascript.
 
 1. ship class/factory
+
     - has properties length, number of times hit, and
-    if they have been sunk status.
+      if they have been sunk status.
     - has hit() function that increases the number of hits on
-    the ship instance.
+      the ship instance.
     - isSunk() function calculates whether a ship is considered
-    sunk based on the length and number of time's it's been hit.
+      sunk based on the length and number of time's it's been hit.
 
 2. gameboard class/factory (finish ship logic first with TDD)
+
+    - gameboard should be able to place ships at specific coordinates
+      by calling the ship factory.
+    - gameboards have a receiveAttack() function:
+        - pin-points coordinates, determines if that position chosen is a hit or miss.
+        - if HIT, then call the hit() fucntion on THAT ship at THAT coordinate.
+        - if MISS, record the coordinates of the missed shot.
+    - gameboards keep track of missed shots for display purposes
+    - gameboards should report whether or not all of the ships have been sunk or not. A win status.
+
+3. player class/factory
+    - two types of players in the game:
+        - real players
+        - computer players (coordinates chosen will be random)
+    - each player will have their own gameboard.
