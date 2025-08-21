@@ -48,6 +48,7 @@ export default function gameboard() {
         let xTemp = xPos;
         let yTemp = yPos;
 
+
         for (let i = 0; i < shipLength; i += 1) {
             if (facingDirection === "right") {
                 xTemp += 1;
@@ -77,33 +78,61 @@ export default function gameboard() {
 
     // takes in a ship and coordinates to place the ship and stores them into the board Map(). returns boolean depending on successful placement.
     function placeShip(shipObj, coordinates, orientation) {
-        const xPos = convertLetterToCoor(coordinates[0]);
-        const yPos = coordinates[1];
+        /*
+        note: positions I am passing to this function are givin in reverse pair order, like this: 
+        [position y (a letter), position x (a number)]
+        because in battleship, you usually call the letter then the number. 
+        */
+        let xPos = Number(coordinates[1]);
+        let yPos = convertLetterToCoor(coordinates[0]);
         const facingDirection = orientation;
+        const shipLength = shipObj.getLength();
 
-        // check if coordinates are out of bounds of the 10x10 board, return false if it is out of bounds
+        // check if starting coordinates are out of bounds of the 10x10 board, return false if it is out of bounds
         if (xPos > 10 || xPos < 1 || yPos > 10 || yPos < 1) {
             return false;
         }
 
         // check if the length of the ship makes the positions go out of bounds. if it does, return false
-        if (
-            checkDirectionInBounds(
-                shipObj.shipLength,
-                xPos,
-                yPos,
-                facingDirection,
-            )
-        ) {
+        if (checkDirectionInBounds(shipLength, xPos, yPos, facingDirection)) {
             return false;
         }
 
-        // for the length of the ship, set the coordinates in the direction it is facing to equal the current ship object
+        // check if the length of the ship clashes with another placed ship. if it does, return false
+        if (checkForShipClash(shipLength, xPos, yPos, facingDirection)) {
+            return false;
+        }
 
-        // const combinedPositionString = `${xPos},${yPos}`;
+        // save the starting position and add it to the board Map()
+        let combinedPositionString = `${xPos},${yPos}`;
+        board.set(combinedPositionString, shipObj);
 
-        // // if coordinates within bounds, set coordinates to
-        // board.set(combinedPositionString, shipObj);
+        /* 
+        for the length of the ship, set the coordinates in the direction it is facing to equal the current ship object and add it to the board Map()
+        note: ending at shipLength - 1 because we already saved the given position, so skip 1 iteration
+        */
+        for (let i = 0; i < shipLength - 1; i += 1) {
+            if (facingDirection === "right") {
+                xPos += 1;
+                combinedPositionString = `${xPos},${yPos}`;
+                board.set(combinedPositionString, shipObj);
+            }
+            if (facingDirection === "left") {
+                xPos -= 1;
+                combinedPositionString = `${xPos},${yPos}`;
+                board.set(combinedPositionString, shipObj);
+            }
+            if (facingDirection === "up") {
+                yPos -= 1;
+                combinedPositionString = `${xPos},${yPos}`;
+                board.set(combinedPositionString, shipObj);
+            }
+            if (facingDirection === "down") {
+                yPos += 1;
+                combinedPositionString = `${xPos},${yPos}`;
+                board.set(combinedPositionString, shipObj);
+            }
+        }
 
         return true;
     }
@@ -111,5 +140,9 @@ export default function gameboard() {
     // setup the board by using placeShip() function to place the 5 ships
     function initializeBoard() {}
 
-    return { initializeBoard, placeShip, board, checkDirectionInBounds };
+    function getBoard() {
+        return board;
+    }
+
+    return { initializeBoard, placeShip, getBoard, checkDirectionInBounds };
 }

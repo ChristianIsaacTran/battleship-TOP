@@ -18,7 +18,6 @@ export default defineConfig([
       "capitalized-comments": ["error", "never"],
       "prefer-object-spread": "error",
       "prefer-exponentiation-operator": "error",
-      "prefer-destructuring": ["error", {"object": true, "array": false}],
       "prefer-const": "error",
       "operator-assignment": ["error", "always"],
       "one-var": ["error", "never"],

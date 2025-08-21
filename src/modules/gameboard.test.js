@@ -42,19 +42,21 @@ describe("gameboard factory tests", () => {
         expect(result).toEqual(false);
     });
 
-    // test("placeShip() test. place a carrier (5 spaces) within the board at position (1,1) going right", () => {
-    //     const testShip = ship(5);
+    test("placeShip() test. place a carrier (5 spaces) within the board at position (1,1) going right", () => {
+        const testShip = ship(5);
 
-    //     testGameboard.placeShip(shipMock, ["A","1"]);
+        expect(testGameboard.placeShip(testShip, ["A","1"], "right")).toBe(true);
 
-    //     const keyIterator = testGameboard.board.keys();
+        console.log([...testGameboard.getBoard().entries()]);
+
+        const keyIterator = testGameboard.getBoard().keys();
         
-    //     expect(keyIterator.next().value).toBe("1,1");
-    //     expect(keyIterator.next().value).toBe("1,2");
-    //     expect(keyIterator.next().value).toBe("1,3");
-    //     expect(keyIterator.next().value).toBe("1,4");
-    //     expect(keyIterator.next().value).toBe("1,5");
-    // });
+        expect(keyIterator.next().value).toBe("1,1");
+        expect(keyIterator.next().value).toBe("2,1");
+        expect(keyIterator.next().value).toBe("3,1");
+        expect(keyIterator.next().value).toBe("4,1");
+        expect(keyIterator.next().value).toBe("5,1");
+    });
 
     // test("placeShip() test. place a battleship (4 spaces) within the board", () => {
     //     expect(testGameboard.placeShip()).toBe(true);
