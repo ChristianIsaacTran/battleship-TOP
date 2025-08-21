@@ -303,6 +303,5 @@ describe("gameboard factory tests", () => {
         expect(tempBoard.has("6,9")).toBe(true);
         expect(tempBoard.get("5,9")).toBe(testShipDestroyer);
         expect(tempBoard.get("6,9")).toBe(testShipDestroyer);
-
     });
 });
