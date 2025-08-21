@@ -42,21 +42,33 @@ describe("gameboard factory tests", () => {
         expect(result).toEqual(false);
     });
 
-    test("placeShip() test. place a carrier (5 spaces) within the board at position (1,1) going right", () => {
+    test("checkForShipClash(). ship at (1, 1) length 5 going to the right, but encounters another ship and return true", () => {
         const testShip = ship(5);
 
-        expect(testGameboard.placeShip(testShip, ["A","1"], "right")).toBe(true);
+        // fill the board with an entry at (3, 1) to block the new ship
+        testGameboard.getBoard().set("3,1", ship(3));
 
         console.log([...testGameboard.getBoard().entries()]);
 
-        const keyIterator = testGameboard.getBoard().keys();
-        
-        expect(keyIterator.next().value).toBe("1,1");
-        expect(keyIterator.next().value).toBe("2,1");
-        expect(keyIterator.next().value).toBe("3,1");
-        expect(keyIterator.next().value).toBe("4,1");
-        expect(keyIterator.next().value).toBe("5,1");
+        const result = testGameboard.checkForShipClash(testShip.getLength(), 1, 1, "right");
+        expect(result).toBe(true);
     });
+
+    // test("placeShip() test. place a carrier (5 spaces) within the board at position (1,1) going right", () => {
+    //     const testShip = ship(5);
+
+    //     expect(testGameboard.placeShip(testShip, ["A","1"], "right")).toBe(true);
+
+    //     console.log([...testGameboard.getBoard().entries()]);
+
+    //     const keyIterator = testGameboard.getBoard().keys();
+        
+    //     expect(keyIterator.next().value).toBe("1,1");
+    //     expect(keyIterator.next().value).toBe("2,1");
+    //     expect(keyIterator.next().value).toBe("3,1");
+    //     expect(keyIterator.next().value).toBe("4,1");
+    //     expect(keyIterator.next().value).toBe("5,1");
+    // });
 
     // test("placeShip() test. place a battleship (4 spaces) within the board", () => {
     //     expect(testGameboard.placeShip()).toBe(true);

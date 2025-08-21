@@ -43,11 +43,15 @@ export default function gameboard() {
         return letterMap.get(letter);
     }
 
+    // returns the board Map() 
+    function getBoard() {
+        return board;
+    }
+
     // checks if the ship's facing direction makes the ship placement go out of bounds. If it does, return true. If it stay in bounds, return false.
     function checkDirectionInBounds(shipLength, xPos, yPos, facingDirection) {
         let xTemp = xPos;
         let yTemp = yPos;
-
 
         for (let i = 0; i < shipLength; i += 1) {
             if (facingDirection === "right") {
@@ -68,6 +72,49 @@ export default function gameboard() {
             } else if (facingDirection === "down") {
                 yTemp += 1;
                 if (yTemp > 10 || yTemp < 1) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    // takes the ship direction, length, x and y coordinates and calculates the future positions, checks the board Map() for ships already using coorindates and returns true if overlapping ships, or false if not overlapping
+    function checkForShipClash(shipLength, xPos, yPos, facingDirection) {
+        let xTemp = xPos;
+        let yTemp = yPos;
+        let combinedPositionString = `${xTemp},${yTemp}`;
+
+        // initial check for starting position. Check coordinate key for existence in board Map()
+        if(board.has(combinedPositionString)) {
+            return true;
+        }
+
+        for (let i = 0; i < shipLength; i += 1) {
+            if (facingDirection === "right") {
+                xTemp += 1;
+               combinedPositionString = `${xTemp},${yTemp}`;
+                if (board.has(combinedPositionString)) {
+                    console.log(`clash detected: ${combinedPositionString}`);
+                    return true;
+                }
+            } else if (facingDirection === "left") {
+                xTemp -= 1;
+                combinedPositionString = `${xTemp},${yTemp}`;
+                if (board.has(combinedPositionString)) {
+                    return true;
+                }
+            } else if (facingDirection === "up") {
+                yTemp -= 1;
+                combinedPositionString = `${xTemp},${yTemp}`;
+                if (board.has(combinedPositionString)) {
+                    return true;
+                }
+            } else if (facingDirection === "down") {
+                yTemp += 1;
+                combinedPositionString = `${xTemp},${yTemp}`;
+                if (board.has(combinedPositionString)) {
                     return true;
                 }
             }
@@ -140,9 +187,7 @@ export default function gameboard() {
     // setup the board by using placeShip() function to place the 5 ships
     function initializeBoard() {}
 
-    function getBoard() {
-        return board;
-    }
+    
 
-    return { initializeBoard, placeShip, getBoard, checkDirectionInBounds };
+    return { initializeBoard, placeShip, getBoard, checkDirectionInBounds, checkForShipClash };
 }
