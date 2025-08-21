@@ -43,7 +43,7 @@ export default function gameboard() {
         return letterMap.get(letter);
     }
 
-    // returns the board Map() 
+    // returns the board Map()
     function getBoard() {
         return board;
     }
@@ -52,8 +52,9 @@ export default function gameboard() {
     function checkDirectionInBounds(shipLength, xPos, yPos, facingDirection) {
         let xTemp = xPos;
         let yTemp = yPos;
+        
 
-        for (let i = 0; i < shipLength; i += 1) {
+        for (let i = 1; i < shipLength; i += 1) {
             if (facingDirection === "right") {
                 xTemp += 1;
                 if (xTemp > 10 || xTemp < 1) {
@@ -87,16 +88,15 @@ export default function gameboard() {
         let combinedPositionString = `${xTemp},${yTemp}`;
 
         // initial check for starting position. Check coordinate key for existence in board Map()
-        if(board.has(combinedPositionString)) {
+        if (board.has(combinedPositionString)) {
             return true;
         }
 
-        for (let i = 0; i < shipLength; i += 1) {
+        for (let i = 1; i < shipLength; i += 1) {
             if (facingDirection === "right") {
                 xTemp += 1;
-               combinedPositionString = `${xTemp},${yTemp}`;
+                combinedPositionString = `${xTemp},${yTemp}`;
                 if (board.has(combinedPositionString)) {
-                    console.log(`clash detected: ${combinedPositionString}`);
                     return true;
                 }
             } else if (facingDirection === "left") {
@@ -123,7 +123,7 @@ export default function gameboard() {
         return false;
     }
 
-    // takes in a ship and coordinates to place the ship and stores them into the board Map(). returns boolean depending on successful placement.
+    // takes in a ship and coordinates to place the ship and stores them into the board Map(). returns boolean depending on successful ship placement.
     function placeShip(shipObj, coordinates, orientation) {
         /*
         note: positions I am passing to this function are givin in reverse pair order, like this: 
@@ -134,6 +134,8 @@ export default function gameboard() {
         let yPos = convertLetterToCoor(coordinates[0]);
         const facingDirection = orientation;
         const shipLength = shipObj.getLength();
+
+        
 
         // check if starting coordinates are out of bounds of the 10x10 board, return false if it is out of bounds
         if (xPos > 10 || xPos < 1 || yPos > 10 || yPos < 1) {
@@ -156,9 +158,9 @@ export default function gameboard() {
 
         /* 
         for the length of the ship, set the coordinates in the direction it is facing to equal the current ship object and add it to the board Map()
-        note: ending at shipLength - 1 because we already saved the given position, so skip 1 iteration
+        note: ending at i = 1 because we already saved the given position, so skip 1 iteration
         */
-        for (let i = 0; i < shipLength - 1; i += 1) {
+        for (let i = 1; i < shipLength; i += 1) {
             if (facingDirection === "right") {
                 xPos += 1;
                 combinedPositionString = `${xPos},${yPos}`;
@@ -187,7 +189,11 @@ export default function gameboard() {
     // setup the board by using placeShip() function to place the 5 ships
     function initializeBoard() {}
 
-    
-
-    return { initializeBoard, placeShip, getBoard, checkDirectionInBounds, checkForShipClash };
+    return {
+        initializeBoard,
+        placeShip,
+        getBoard,
+        checkDirectionInBounds,
+        checkForShipClash,
+    };
 }
