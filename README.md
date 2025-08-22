@@ -11,6 +11,12 @@ note: to run individual test files with jest, I would just have to invoke jest o
 ex: npx jest ./filepathToTest/something.test.js
 I could also input an optional --watch or --watchAll so that whenever I make changes to that specific file or any file if I choose
 watchAll, then the test would automatically run. I would stop the watch with ctrl + c in command line.
+remember that to run an individual test and skip the rest, I have to add the .only flag to the test. So it would look like: test.only()
+
+(8/21/2025) Start using conventional commit headers to make commits more organized. Kind of like:
+docs: changed the README.md
+or
+fix: fixed an issue with the placeShip() function
 
 ## Battleship project from The Odin Project
 
@@ -41,3 +47,5 @@ This is a projet that combines the javascript logic of battleship with HTML dom 
         - real players
         - computer players (coordinates chosen will be random)
     - each player will have their own gameboard.
+
+
