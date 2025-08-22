@@ -100,7 +100,7 @@ describe("gameboard factory tests", () => {
             false,
         );
     });
-    
+
     test("placeShip() test. place a carrier (5 spaces) within the board at position (1,1) going right", () => {
         const testShip = ship(5);
 
@@ -303,5 +303,27 @@ describe("gameboard factory tests", () => {
         expect(tempBoard.has("6,9")).toBe(true);
         expect(tempBoard.get("5,9")).toBe(testShipDestroyer);
         expect(tempBoard.get("6,9")).toBe(testShipDestroyer);
+    });
+
+    test("receiveAttack() test. receive attack tries to attack a ship located at coordinate (1,1). Should return true since it was a successful hit, and should store coordinates.", () => {
+        const testShipCarrier = ship(5);
+        testGameboard.placeShip(testShipCarrier, ["A", "1"], "right");
+
+        // check if the attack was successful (returned true)
+        expect(testGameboard.receiveAttack(["A", "1"])).toBe(true);
+        
+        const attackHistory = testGameboard.getAttackHistory();
+
+        /*
+        plan is to have another Map() object called attackHistory that stores the hit/miss record and coordinates of this board. 
+        if the attack is successful, then it will call the ship at that location's hit() and record the location and the ship as a key/value pair.
+        if the attack was a miss, then it will record the coordinate as the key and the value will be a string "miss".
+        */ 
+
+        // check if attack was recorded
+        expect(attackHistory.has("1,1")).toBe(true);
+
+        // check if attack was on the correct ship 
+        expect(attackHistory.get("1,1")).toBe(testShipCarrier);
     });
 });
