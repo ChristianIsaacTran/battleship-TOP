@@ -13,13 +13,6 @@ describe("gameboard factory tests", () => {
         testGameboard = gameboard();
     });
 
-    test("placeShip() test. returns false if the coordinates given are out of bounds", () => {
-        const testShip = ship(3);
-        expect(testGameboard.placeShip(testShip, ["B", "11"], "right")).toBe(
-            false,
-        );
-    });
-
     test("checkDirectionInBounds(). ship at (1,1) length 5 going right, should return false (it fits)", () => {
         const testShip = ship(5);
         const result = testGameboard.checkDirectionInBounds(
@@ -101,6 +94,13 @@ describe("gameboard factory tests", () => {
         expect(result).toBe(false);
     });
 
+    test("placeShip() test. returns false if the coordinates given are out of bounds", () => {
+        const testShip = ship(3);
+        expect(testGameboard.placeShip(testShip, ["B", "11"], "right")).toBe(
+            false,
+        );
+    });
+    
     test("placeShip() test. place a carrier (5 spaces) within the board at position (1,1) going right", () => {
         const testShip = ship(5);
 
