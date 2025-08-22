@@ -15,8 +15,11 @@
 import ship from "./ship.js";
 
 export default function gameboard() {
-    // game board itself
+    // game board itself, stores coordinates and ship objects at coordinates
     const board = new Map();
+
+    // a history of incoming attacks on this board. Stores the coordinates and the hit or miss status
+    const attackHistory = new Map();
 
     // letter-coordinate reference
     const letterMap = new Map();
@@ -52,7 +55,6 @@ export default function gameboard() {
     function checkDirectionInBounds(shipLength, xPos, yPos, facingDirection) {
         let xTemp = xPos;
         let yTemp = yPos;
-        
 
         for (let i = 1; i < shipLength; i += 1) {
             if (facingDirection === "right") {
@@ -135,8 +137,6 @@ export default function gameboard() {
         const facingDirection = orientation;
         const shipLength = shipObj.getLength();
 
-        
-
         // check if starting coordinates are out of bounds of the 10x10 board, return false if it is out of bounds
         if (xPos > 10 || xPos < 1 || yPos > 10 || yPos < 1) {
             return false;
@@ -186,6 +186,46 @@ export default function gameboard() {
         return true;
     }
 
+    /*
+    receiveAttack() takes in a coordinate indicating an incoming attack and returns true if the attack is a hit, or false if the attack is a miss.
+    for every attack given, the coordinates and the attack itself will be stored in a Map() called attackHistory. This is to keep 
+    track of the attacks and coordinates, and will map each coordinate to a ship that was successfully attacked or a string that indicates a 
+    "miss".
+    */
+    function receiveAttack(coordinates) {
+        const xPos = Number(coordinates[1]);
+        const yPos = convertLetterToCoor(coordinates[0]);
+        const combinedPositionString = `${xPos},${yPos}`;
+
+        // initial check to prevent attacking the same coordinates more than once
+        if (attackHistory.has(combinedPositionString)) {
+            return false;
+        }
+
+        // check if the attack coordinate is within bounds
+        if (xPos > 10 || xPos < 1 || yPos > 10 || yPos < 1) {
+            return false;
+        }
+
+        // if a ship exists at that coordinate then it is a hit. Return true, call hit() on ship, store the coordinate and ship reference in attackHistory Map()
+        if (board.has(combinedPositionString)) {
+            const shipThatWasHit = board.get(combinedPositionString);
+            shipThatWasHit.hit();
+            attackHistory.set(combinedPositionString, shipThatWasHit);
+            return true;
+        }
+
+        // if it isn't a hit, store the coordinate and the string "miss" in the attackHistory Map() and return false
+        attackHistory.set(combinedPositionString, "miss");
+
+        return false;
+    }
+
+    // utility get function. Returns attackHistory Map()
+    function getAttackHistory() {
+        return attackHistory;
+    }
+
     // setup the board by using placeShip() function to place the 5 ships
     function initializeBoard() {}
 
@@ -195,5 +235,7 @@ export default function gameboard() {
         getBoard,
         checkDirectionInBounds,
         checkForShipClash,
+        receiveAttack,
+        getAttackHistory,
     };
 }

@@ -326,4 +326,34 @@ describe("gameboard factory tests", () => {
         // check if attack was on the correct ship 
         expect(attackHistory.get("1,1")).toBe(testShipCarrier);
     });
+
+    test("receiveAttack() test. receive attack gets out of bounds coordinates, returns false", () => {
+        const testShipCarrier = ship(5);
+        testGameboard.placeShip(testShipCarrier, ["A", "1"], "right");
+
+        expect(testGameboard.receiveAttack("A", "900")).toBe(false);
+    });
+
+    test("receiveAttack() test. try to attack the same exact coodinate twice, returns false", () => {
+        const testShipCarrier = ship(5);
+        testGameboard.placeShip(testShipCarrier, ["A", "1"], "right");
+
+        // attack once at (1,1)
+        testGameboard.receiveAttack(["A","1"]);
+
+        // attempt to attack again at (1,1)
+        expect(testGameboard.receiveAttack(["A","1"])).toBe(false);
+    });
+
+    test("receiveAttack() test. try to attack the entire length of the carrier at (1,1) going right. All 5 attacks should be true", () => {
+        const testShipCarrier = ship(5);
+        testGameboard.placeShip(testShipCarrier, ["A", "1"], "right");
+
+        expect(testGameboard.receiveAttack(["A","1"])).toBe(true);
+        expect(testGameboard.receiveAttack(["A","2"])).toBe(true);
+        expect(testGameboard.receiveAttack(["A","3"])).toBe(true);
+        expect(testGameboard.receiveAttack(["A","4"])).toBe(true);
+        expect(testGameboard.receiveAttack(["A","5"])).toBe(true);
+    });
+
 });
