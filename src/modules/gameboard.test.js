@@ -2,6 +2,7 @@
 import { describe, test, jest, expect } from "@jest/globals";
 import gameboard from "./gameboard.js";
 import ship from "./ship.js";
+import { RuleTester } from "eslint";
 /*
     coordinates are going to be given in battleship [letter, number] format, with letter and number being strings
     ex: [B, 8]
@@ -311,19 +312,19 @@ describe("gameboard factory tests", () => {
 
         // check if the attack was successful (returned true)
         expect(testGameboard.receiveAttack(["A", "1"])).toBe(true);
-        
+
         const attackHistory = testGameboard.getAttackHistory();
 
         /*
         plan is to have another Map() object called attackHistory that stores the hit/miss record and coordinates of this board. 
         if the attack is successful, then it will call the ship at that location's hit() and record the location and the ship as a key/value pair.
         if the attack was a miss, then it will record the coordinate as the key and the value will be a string "miss".
-        */ 
+        */
 
         // check if attack was recorded
         expect(attackHistory.has("1,1")).toBe(true);
 
-        // check if attack was on the correct ship 
+        // check if attack was on the correct ship
         expect(attackHistory.get("1,1")).toBe(testShipCarrier);
     });
 
@@ -339,21 +340,82 @@ describe("gameboard factory tests", () => {
         testGameboard.placeShip(testShipCarrier, ["A", "1"], "right");
 
         // attack once at (1,1)
-        testGameboard.receiveAttack(["A","1"]);
+        testGameboard.receiveAttack(["A", "1"]);
 
         // attempt to attack again at (1,1)
-        expect(testGameboard.receiveAttack(["A","1"])).toBe(false);
+        expect(testGameboard.receiveAttack(["A", "1"])).toBe(false);
     });
 
     test("receiveAttack() test. try to attack the entire length of the carrier at (1,1) going right. All 5 attacks should be true", () => {
         const testShipCarrier = ship(5);
         testGameboard.placeShip(testShipCarrier, ["A", "1"], "right");
-        expect(testGameboard.receiveAttack(["A","1"])).toBe(true);
-        expect(testGameboard.receiveAttack(["A","2"])).toBe(true);
-        expect(testGameboard.receiveAttack(["A","3"])).toBe(true);
-        expect(testGameboard.receiveAttack(["A","4"])).toBe(true);
-        expect(testGameboard.receiveAttack(["A","5"])).toBe(true);
+        expect(testGameboard.receiveAttack(["A", "1"])).toBe(true);
+        expect(testGameboard.receiveAttack(["A", "2"])).toBe(true);
+        expect(testGameboard.receiveAttack(["A", "3"])).toBe(true);
+        expect(testGameboard.receiveAttack(["A", "4"])).toBe(true);
+        expect(testGameboard.receiveAttack(["A", "5"])).toBe(true);
         expect(testShipCarrier.isSunk()).toBe(true);
     });
 
+    test("addGamePiece() test. checks if the ships were successfully added to gamePieces Map()", () => {
+        const testShipCarrier = ship(5);
+
+        const gamePiecesMap = testGameboard.addGamePiece(testShipCarrier);
+
+        expect(gamePiecesMap.has("carrier")).toBe(true);
+    });
+
+    test("checkAllSunk() test. returns false if there are still ships that are not sunk", () => {
+        const testShipCarrier = ship(5);
+        const testShipBattleShip = ship(4);
+        const testShipCruiser = ship(3);
+        const testShipSubmarine = ship(3);
+        const testShipDestroyer = ship(2);
+
+        testGameboard.placeShip(testShipCarrier, ["B", "3"], "down");
+        testGameboard.placeShip(testShipBattleShip, ["D", "2"], "down");
+        testGameboard.placeShip(testShipCruiser, ["C", "6"], "right");
+        testGameboard.placeShip(testShipSubmarine, ["G", "9"], "down");
+        testGameboard.placeShip(testShipDestroyer, ["I", "5"], "right");
+
+        expect(testGameboard.checkAllSunk()).toBe(false);
+    });
+
+    test("checkAllSunk() test. returns true if all ship's sunk statuses are true", () => {
+        const testShipCarrier = ship(5);
+        const testShipBattleShip = ship(4);
+        const testShipCruiser = ship(3);
+        const testShipSubmarine = ship(3);
+        const testShipDestroyer = ship(2);
+
+        testGameboard.placeShip(testShipCarrier, ["B", "3"], "down");
+        testGameboard.placeShip(testShipBattleShip, ["D", "2"], "down");
+        testGameboard.placeShip(testShipCruiser, ["C", "6"], "right");
+        testGameboard.placeShip(testShipSubmarine, ["G", "9"], "down");
+        testGameboard.placeShip(testShipDestroyer, ["I", "5"], "right");
+
+
+        // sink all the ships 
+        testShipCarrier.hit();
+        testShipCarrier.hit();
+        testShipCarrier.hit();
+        testShipCarrier.hit();
+        testShipCarrier.hit();
+        testShipBattleShip.hit();
+        testShipBattleShip.hit();
+        testShipBattleShip.hit();
+        testShipBattleShip.hit();
+        testShipCruiser.hit();
+        testShipCruiser.hit();
+        testShipCruiser.hit();
+        testShipSubmarine.hit();
+        testShipSubmarine.hit();
+        testShipSubmarine.hit();
+        testShipDestroyer.hit();
+        testShipDestroyer.hit();
+
+        expect(testGameboard.checkAllSunk()).toBe(true);
+    });
+
+    
 });

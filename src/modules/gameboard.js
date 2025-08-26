@@ -35,11 +35,7 @@ export default function gameboard() {
     letterMap.set("J", 10);
 
     // ship pieces
-    const carrier = ship(5);
-    const battleship = ship(4);
-    const cruiser = ship(3);
-    const submarine = ship(3);
-    const destroyer = ship(2);
+    const gamePieces = new Map();
 
     // takes in a letter string and returns the number position
     function convertLetterToCoor(letter) {
@@ -81,6 +77,25 @@ export default function gameboard() {
         }
 
         return false;
+    }
+
+    // utility function, adds given shipObj to the gamePieces Map() based on it's length.
+    function addGamePiece(shipObj) {
+        const shipLength = shipObj.getLength();
+
+        if (shipLength === 5) {
+            gamePieces.set("carrier", shipObj);
+        } else if (shipLength === 4) {
+            gamePieces.set("battleship", shipObj);
+        } else if (shipLength === 3 && !gamePieces.has("cruiser")) {
+            gamePieces.set("cruiser", shipObj);
+        } else if (shipLength === 3 && !gamePieces.has("submarine")) {
+            gamePieces.set("submarine", shipObj);
+        } else if (shipLength === 2) {
+            gamePieces.set("destroyer", shipObj);
+        }
+
+        return gamePieces;
     }
 
     // takes the ship direction, length, x and y coordinates and calculates the future positions, checks the board Map() for ships already using coorindates and returns true if overlapping ships, or false if not overlapping
@@ -151,6 +166,9 @@ export default function gameboard() {
         if (checkForShipClash(shipLength, xPos, yPos, facingDirection)) {
             return false;
         }
+
+        // add this ship to the gamePieces Map()
+        addGamePiece(shipObj);
 
         // save the starting position and add it to the board Map()
         let combinedPositionString = `${xPos},${yPos}`;
@@ -231,8 +249,20 @@ export default function gameboard() {
     }
 
     /*
-    
+        checkAllSunk() checks a Map() that contains the pieces for this gameboard and checks if all of them have been sunk with their isSunk() status. 
+        Returns true if all ships on the board have been sunk, returns false if there are still ships remaining.
     */
+    function checkAllSunk() {
+        
+        // iterate over the values in the Map(). if any of the ship statuses are false, then return false since there is at least 1 ship not sunk. Otherwise return true
+        for(const shipObj of gamePieces.values()) {
+            if(shipObj.isSunk() === false) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     return {
         placeShip,
@@ -241,5 +271,7 @@ export default function gameboard() {
         checkForShipClash,
         receiveAttack,
         getAttackHistory,
+        checkAllSunk,
+        addGamePiece,
     };
 }
