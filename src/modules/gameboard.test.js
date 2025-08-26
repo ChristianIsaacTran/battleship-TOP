@@ -348,12 +348,12 @@ describe("gameboard factory tests", () => {
     test("receiveAttack() test. try to attack the entire length of the carrier at (1,1) going right. All 5 attacks should be true", () => {
         const testShipCarrier = ship(5);
         testGameboard.placeShip(testShipCarrier, ["A", "1"], "right");
-
         expect(testGameboard.receiveAttack(["A","1"])).toBe(true);
         expect(testGameboard.receiveAttack(["A","2"])).toBe(true);
         expect(testGameboard.receiveAttack(["A","3"])).toBe(true);
         expect(testGameboard.receiveAttack(["A","4"])).toBe(true);
         expect(testGameboard.receiveAttack(["A","5"])).toBe(true);
+        expect(testShipCarrier.isSunk()).toBe(true);
     });
 
 });

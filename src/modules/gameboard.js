@@ -207,10 +207,14 @@ export default function gameboard() {
             return false;
         }
 
-        // if a ship exists at that coordinate then it is a hit. Return true, call hit() on ship, store the coordinate and ship reference in attackHistory Map()
+        /*
+        if a ship exists at that coordinate then it is a hit. Return true, call hit() on ship, store the coordinate and ship reference in attackHistory Map().
+        also if the ship hit was successful, check if the ship sunk with isSunk() method.
+        */
         if (board.has(combinedPositionString)) {
             const shipThatWasHit = board.get(combinedPositionString);
             shipThatWasHit.hit();
+            shipThatWasHit.isSunk();
             attackHistory.set(combinedPositionString, shipThatWasHit);
             return true;
         }
@@ -226,11 +230,11 @@ export default function gameboard() {
         return attackHistory;
     }
 
-    // setup the board by using placeShip() function to place the 5 ships
-    function initializeBoard() {}
+    /*
+    
+    */
 
     return {
-        initializeBoard,
         placeShip,
         getBoard,
         checkDirectionInBounds,
