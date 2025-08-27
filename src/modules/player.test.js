@@ -27,9 +27,12 @@ describe("player factory tests", () => {
     test("makeBoard() function. places ships that the player gives with placeShip() from gameboard", () => {
         testPlayer.initPlayer("Player 1");
 
-        testPlayer.makeBoard();
+        testPlayer.makeBoard(["B","3"], "down", ["D","2"], "down", ["C","6"], "right", ["G","9"], "down", ["I","5"], "right");
 
-        const resultBoard = testPlayer.getGameBoard();
+        const gameBoard = testPlayer.getGameBoard();
+
+        const resultBoard = gameBoard.getBoard();
+
 
         let resultIterator = 0;
 
@@ -38,15 +41,19 @@ describe("player factory tests", () => {
         });
 
         expect(resultBoard).toBeDefined();
-        expect(resultIterator).toBe(5);
+
+        // with all ship lengths added together, it equals 17. There should be 17 entries that represent ships on the board in the gameboard() object.
+        expect(resultIterator).toBe(17);
     });
 
     test("makeBoard() function. places ships randomly if the player is a computer with placeShip()", () => {
-        makeBoard.initPlayer("", true);
+        testPlayer.initPlayer("", true);
         
         testPlayer.makeBoard(); 
 
-        const resultBoard = testPlayer.getGameBoard();
+        const gameBoard = testPlayer.getGameBoard();
+
+        const resultBoard = gameBoard.getBoard();
 
         let resultIterator = 0;
 
