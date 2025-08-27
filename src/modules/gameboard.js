@@ -12,7 +12,6 @@
  - going to be non-zero starting position
  - use battleship coordinates (letters and numbers)
  */
-import ship from "./ship.js";
 
 export default function gameboard() {
     // game board itself, stores coordinates and ship objects at coordinates
