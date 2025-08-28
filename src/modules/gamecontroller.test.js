@@ -101,5 +101,4 @@ describe("Game controller tests", () => {
         expect(boardSpacesCounter).toBe(17);
     });
 
-    // test("playRound()");
 });
