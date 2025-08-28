@@ -11,7 +11,7 @@
  - going to use Map() data structure to store positions
  - going to be non-zero starting position
  - use battleship coordinates (letters and numbers)
- */
+*/
 
 export default function gameboard() {
     // game board itself, stores coordinates and ship objects at coordinates
