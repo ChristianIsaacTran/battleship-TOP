@@ -21,7 +21,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 100px;
+    gap: 20px;
 }
 
 .grid-container-player1 {
@@ -69,4 +69,16 @@ body {
 
 .player2-header {
     font-size: 2rem;
+}
+
+.attack-history-textbox {
+    border: 1px solid black;
+    width: 1000px;
+    height: 150px;
+    font-size: 1.5rem;
+    padding: 10px;
+}
+
+.current-turn-message {
+    color: green;
 }
