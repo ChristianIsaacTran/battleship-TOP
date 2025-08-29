@@ -268,13 +268,11 @@ export default function player() {
         playerLose = boolean;
     }
 
-    // returns a boolean and a console.log() message to declare if this player lost.
+    // returns a boolean if the player lost the game
     function checkPlayerLostGame() {
         if (playerLose) {
-            console.log(`All ships have been sunk. ${playerName} loses`);
             return true;
         }
-
         return false;
     }
 

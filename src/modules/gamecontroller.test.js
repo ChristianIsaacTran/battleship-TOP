@@ -225,8 +225,85 @@ describe("Game controller tests", () => {
         const player1GameBoard = player1.getGameBoard();
         const player1AttackHistory = player1GameBoard.getAttackHistory();
 
-        console.log(player1AttackHistory);
-
         expect(player1AttackHistory.has("3,2")).toBe(true);
+    });
+
+    test.only("test a full game and sink all of player 2's ships. Check if the win condition stops the game and declares winner", () => {
+         // players are going to have identical boards with same ship placements
+        testGameController.makePlayer1(
+            "player 1",
+            ["B", "3"],
+            "down",
+            ["D", "2"],
+            "down",
+            ["C", "6"],
+            "right",
+            ["G", "9"],
+            "down",
+            ["I", "5"],
+            "right",
+        );
+
+        testGameController.makePlayer2(
+            "player 2",
+            false,
+            ["B", "3"],
+            "down",
+            ["D", "2"],
+            "down",
+            ["C", "6"],
+            "right",
+            ["G", "9"],
+            "down",
+            ["I", "5"],
+            "right",
+        );
+
+        // going to skip player 2 turns by swapping current turn to eliminate player 2 ships to check for win condition 
+
+        // sink carrier 
+        testGameController.playRound("B","3");
+        testGameController.swapCurrentTurn();
+        testGameController.playRound("C","3");
+        testGameController.swapCurrentTurn();
+        testGameController.playRound("D","3");
+        testGameController.swapCurrentTurn();
+        testGameController.playRound("E","3");
+        testGameController.swapCurrentTurn();
+        testGameController.playRound("F","3");
+        testGameController.swapCurrentTurn();
+
+        // sink battleship
+        testGameController.playRound("D","2");
+        testGameController.swapCurrentTurn();
+        testGameController.playRound("E","2");
+        testGameController.swapCurrentTurn();
+        testGameController.playRound("F","2");
+        testGameController.swapCurrentTurn();
+        testGameController.playRound("G","2");
+        testGameController.swapCurrentTurn();
+
+        // sink cruiser
+        testGameController.playRound("C","6");
+        testGameController.swapCurrentTurn();
+        testGameController.playRound("C","7");
+        testGameController.swapCurrentTurn();
+        testGameController.playRound("C","8");
+        testGameController.swapCurrentTurn();
+
+        // sink submarine
+        testGameController.playRound("G","9");
+        testGameController.swapCurrentTurn();
+        testGameController.playRound("H","9");
+        testGameController.swapCurrentTurn();
+        testGameController.playRound("I","9");
+        testGameController.swapCurrentTurn();
+
+        // sink destroyer
+        testGameController.playRound("I","5");
+        testGameController.swapCurrentTurn();
+
+        // should get a console.log message declaring the winner.
+        expect(testGameController.playRound("I","6")).toBe(true);
     });
 });

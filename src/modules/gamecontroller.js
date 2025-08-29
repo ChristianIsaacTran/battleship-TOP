@@ -96,7 +96,8 @@ export default function gamecontroller() {
     /*
      playRound() function. plays a full round, getting input from the current turn's player and making an attack on player 2
      given attack coordinates, send the attack to the opposing player depending on whoever the current turn is, then check for a 
-     win condition on the opposing player. If no win, then swap turns. Also check if player 2 is a computer or not
+     win condition on the opposing player. If no win, then swap turns. Also check if player 2 is a computer or not.
+     Will return true if a win is detected, false if no win
     */
     function playRound(attackCoorY, attackCoorX) {
         // current turn player1 =  Attack player 2 with given coordinates then check if all player 2's ships have been sunk. if not, swap to player 2
@@ -105,15 +106,14 @@ export default function gamecontroller() {
             const player1Attack = player1.sendAttack(attackCoorY, attackCoorX);
 
             // send player 1 attack to player 2 board
-            const player2GameBoard = player2.getGameBoard();
-            player2GameBoard.receiveAttack(player1Attack);
+            player2.playerReceiveAttack(player1Attack);
 
             // check if player 2 lost the game after attack
             if (player2.checkPlayerLostGame()) {
                 console.log(
                     "All ships from player 2 have been sunk. Player 1 wins!",
                 );
-                return;
+                return true;
             }
 
             // if the win condition is not true, then swap turns
@@ -128,15 +128,14 @@ export default function gamecontroller() {
             const player2Attack = player2.sendAttack();
 
             // send player 2 Computer attack to player 1 board
-            const player1GameBoard = player1.getGameBoard();
-            player1GameBoard.receiveAttack(player2Attack);
+            player1.playerReceiveAttack(player2Attack);
 
             // check win condition. If player 1 ships have been sunk after attack, declare winner
             if (player1.checkPlayerLostGame()) {
                 console.log(
                     "All ships from player 1 have been sunk. Player 2 (COMPUTER) wins!",
                 );
-                return;
+                return true;
             }
 
             swapCurrentTurn();
@@ -150,20 +149,22 @@ export default function gamecontroller() {
             const player2Attack = player2.sendAttack(attackCoorY, attackCoorX);
 
             // send player 2 attack to player 1 board
-            const player1GameBoard = player1.getGameBoard();
-            player1GameBoard.receiveAttack(player2Attack);
+            player1.playerReceiveAttack(player2Attack);
 
             // check if player 1 lost the game after attack
             if (player1.checkPlayerLostGame()) {
                 console.log(
                     "All ships from player 1 have been sunk. Player 2 wins!",
                 );
-                return;
+                return true;
             }
 
             // if the win condition is not true, then swap turns
             swapCurrentTurn();
         }
+
+        // if no win condition, return false
+        return false;
     }
 
     // utility function, used to manipulate the currentTurn value for testing
