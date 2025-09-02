@@ -228,7 +228,7 @@ describe("Game controller tests", () => {
         expect(player1AttackHistory.has("3,2")).toBe(true);
     });
 
-    test.only("test a full game and sink all of player 2's ships. Check if the win condition stops the game and declares winner", () => {
+    test("test a full game and sink all of player 2's ships. Check if the win condition stops the game and declares winner", () => {
          // players are going to have identical boards with same ship placements
         testGameController.makePlayer1(
             "player 1",
