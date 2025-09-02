@@ -1,3 +1,10 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+
 html,
 h1,
 h2,
@@ -81,4 +88,29 @@ body {
 
 .current-turn-message {
     color: green;
+}
+
+.gamemode-selection {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    position: fixed;
+    top: 20vh;
+    gap: 50px;
+}
+
+.gamemode-selection > p {
+    font-size: 2rem;
+}
+
+.gamemode-button-container {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 30px;
+}
+
+.gamemode-button-container > button {
+    padding: 30px;
+    font-size: 1.5rem;
+    width: 400px;
 }
