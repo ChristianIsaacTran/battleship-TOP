@@ -90,12 +90,10 @@ body {
     color: green;
 }
 
-.gamemode-selection {
+.gamemode-selection[open] {
     display: flex;
     align-items: center;
     flex-direction: column;
-    position: fixed;
-    top: 20vh;
     gap: 50px;
 }
 
@@ -115,9 +113,8 @@ body {
     width: 400px;
 }
 
-.pvp-player1-options, .pvp-player2-options {
+.pvp-player1-options[open], .pvp-player2-options[open] {
     width: 500px;
-    position: fixed;
 }
 
 .name-group {
