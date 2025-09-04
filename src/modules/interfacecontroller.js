@@ -1,6 +1,8 @@
 import gamecontroller from "./gamecontroller.js";
 
 export default function interfacecontroller() {
+    // scoped game controller 
+    const gameControl = gamecontroller();
 
     // renders gamemode selection when upon webpage load
     function renderGamemodeSelection() {
@@ -32,7 +34,34 @@ export default function interfacecontroller() {
             dialog.showModal();
         });
 
+        /*
+        pressing a gamemode option opens a modal that allows the user to place ships 
+        in specific coordinate locations. Depeding on player vs player or player vs computer, 
+        there will be different modal selection menus. 
+        I think the sequence should be: 
+        if pvp, 
+            1. show player 1 ship placements menu 
+            2. then show player 2 ship placements menu 
+            3. render sides
+        if pvc, 
+            1. show player 1 ship placements menu 
+            2. render sides
+        */
+        pvpButton.addEventListener("click", () => {
+            
+        });
 
+        pvcButton.addEventListener("click", () => {
+
+        });
+
+
+
+    }
+
+    // renders the player 1 ship placement menu 
+    function player1ShipPlacementModal() {
+        
     }
 
     // renders the current boards for both players

@@ -15,6 +15,193 @@
                 <button class="player-vs-computer">Player vs Computer</button>
             </div>
         </dialog> -->
+
+        <dialog class="pvp-player1-options" open>
+            <form class="player1-form" action="">
+                <h1>Player 1 options:</h1>
+                <div class="name-group">
+                    <label for="p1-name">Player 1 name:</label>
+                    <input type="text" id="p1-name" maxlength="20" />
+                </div>
+                <h1>Ship placements: </h1>
+                <div class="ship-group">
+                    <label>Carrier (5 spaces)</label>
+                    <div class="input-group">
+                        <input
+                            type="text"
+                            id="carrier-p1"
+                            placeholder="placement position ex: B,1"
+                        />
+                        <select id="directions">
+                            <option value="left">left</option>
+                            <option value="right">right</option>
+                            <option value="up">up</option>
+                            <option value="down">down</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="ship-group">
+                    <label>Battleship (4 spaces)</label>
+                    <div class="input-group">
+                        <input
+                            type="text"
+                            id="battleship-p1"
+                            placeholder="placement position ex: B,1"
+                        />
+                        <select id="directions">
+                            <option value="left">left</option>
+                            <option value="right">right</option>
+                            <option value="up">up</option>
+                            <option value="down">down</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="ship-group">
+                    <label>Cruiser (3 spaces)</label>
+                    <div class="input-group">
+                        <input
+                            type="text"
+                            id="cruiser-p1"
+                            placeholder="placement position ex: B,1"
+                        />
+                        <select id="directions">
+                            <option value="left">left</option>
+                            <option value="right">right</option>
+                            <option value="up">up</option>
+                            <option value="down">down</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="ship-group">
+                    <label>Submarine (3 spaces)</label>
+                    <div class="input-group">
+                        <input
+                            type="text"
+                            id="submarine-p1"
+                            placeholder="placement position ex: B,1"
+                        />
+                        <select id="directions">
+                            <option value="left">left</option>
+                            <option value="right">right</option>
+                            <option value="up">up</option>
+                            <option value="down">down</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="ship-group">
+                    <label>Destroyer (2 spaces)</label>
+                    <div class="input-group">
+                        <input
+                            type="text"
+                            id="destroyer-p1"
+                            placeholder="placement position ex: B,1"
+                        />
+                        <select id="directions">
+                            <option value="left">left</option>
+                            <option value="right">right</option>
+                            <option value="up">up</option>
+                            <option value="down">down</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="form-submit" type="submit">Submit</button>
+            </form>
+        </dialog>
+
+        <dialog class="pvp-player2-options">
+            <form class="player2-form" action="">
+                <h1>Player 2 options:</h1>
+                <div class="name-group">
+                    <label for="p2-name">Player 2 name:</label>
+                    <input type="text" id="p2-name" maxlength="20" />
+                </div>
+                <h1>Ship placements: </h1>
+                <div class="ship-group">
+                    <label>Carrier (5 spaces)</label>
+                    <div class="input-group">
+                        <input
+                            type="text"
+                            id="carrier-p2"
+                            placeholder="placement position ex: B,1"
+                        />
+                        <select id="directions">
+                            <option value="left">left</option>
+                            <option value="right">right</option>
+                            <option value="up">up</option>
+                            <option value="down">down</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="ship-group">
+                    <label>Battleship (4 spaces)</label>
+                    <div class="input-group">
+                        <input
+                            type="text"
+                            id="battleship-p2"
+                            placeholder="placement position ex: B,1"
+                        />
+                        <select id="directions">
+                            <option value="left">left</option>
+                            <option value="right">right</option>
+                            <option value="up">up</option>
+                            <option value="down">down</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="ship-group">
+                    <label>Cruiser (3 spaces)</label>
+                    <div class="input-group">
+                        <input
+                            type="text"
+                            id="cruiser-p2"
+                            placeholder="placement position ex: B,1"
+                        />
+                        <select id="directions">
+                            <option value="left">left</option>
+                            <option value="right">right</option>
+                            <option value="up">up</option>
+                            <option value="down">down</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="ship-group">
+                    <label>Submarine (3 spaces)</label>
+                    <div class="input-group">
+                        <input
+                            type="text"
+                            id="submarine-p2"
+                            placeholder="placement position ex: B,1"
+                        />
+                        <select id="directions">
+                            <option value="left">left</option>
+                            <option value="right">right</option>
+                            <option value="up">up</option>
+                            <option value="down">down</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="ship-group">
+                    <label>Destroyer (2 spaces)</label>
+                    <div class="input-group">
+                        <input
+                            type="text"
+                            id="destroyer-p2"
+                            placeholder="placement position ex: B,1"
+                        />
+                        <select id="directions">
+                            <option value="left">left</option>
+                            <option value="right">right</option>
+                            <option value="up">up</option>
+                            <option value="down">down</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="form-submit" type="submit">Submit</button>
+            </form>
+        </dialog>
+
+
+
         <h1 class="game-title">Battleship</h1>
         <div class="content-container">
             <div class="player1-content">
