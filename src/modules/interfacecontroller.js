@@ -99,7 +99,7 @@ export default function interfacecontroller() {
         p1NameInput.setAttribute("maxlength", "20");
         p1NameInput.setAttribute("name", "player1Name");
         p1NameInput.setAttribute("placeholder", "player 1 name goes here...");
-        const select = document.createElement("select");
+        
 
         // construct form
         form.appendChild(optionHeader);
@@ -117,6 +117,7 @@ export default function interfacecontroller() {
             const shipInput = document.createElement("input");
             shipInput.setAttribute("type", "text");
             shipInput.setAttribute("placeholder", "placement position ex: B,1");
+            const select = document.createElement("select");
 
             // for each loop, change the appropriate ship label and id value for the ship inputs
             if (i === 0) {
