@@ -99,7 +99,7 @@ export default function interfacecontroller() {
         p1NameInput.setAttribute("maxlength", "20");
         p1NameInput.setAttribute("name", "player1Name");
         p1NameInput.setAttribute("placeholder", "player 1 name goes here...");
-        
+        p1NameInput.setAttribute("required", "");
 
         // construct form
         form.appendChild(optionHeader);
@@ -117,7 +117,38 @@ export default function interfacecontroller() {
             const shipInput = document.createElement("input");
             shipInput.setAttribute("type", "text");
             shipInput.setAttribute("placeholder", "placement position ex: B,1");
+            shipInput.setAttribute("required", "");
+            shipInput.setAttribute("maxlength", "4");
             const select = document.createElement("select");
+
+            // set form validation for coordinate format [letter,number]
+            shipInput.addEventListener("input", () => {
+                // force inputs to be in uppercase
+                shipInput.value = shipInput.value.toUpperCase();
+
+                // test for empty input field
+                const onlyWhiteSpace = /^\s*$/;
+                if (onlyWhiteSpace.test(shipInput.value)) {
+                    shipInput.setCustomValidity(
+                        "Cannot leave starting ship location blank",
+                    );
+                } else {
+                    shipInput.setCustomValidity("");
+
+                    // test for incorrect location format as long as there is something in the input field
+                    const letterThenNumber = /^[A-J],(10|[1-9])+$/;
+
+                    if (letterThenNumber.test(shipInput.value)) {
+                        shipInput.setCustomValidity("");
+                    } else {
+                        shipInput.setCustomValidity(
+                            "Must be in format: [letter,number] from A-J and 1-10. Ex: B,3",
+                        );
+                    }
+                }
+
+                shipInput.reportValidity();
+            });
 
             // for each loop, change the appropriate ship label and id value for the ship inputs
             if (i === 0) {
@@ -292,6 +323,7 @@ export default function interfacecontroller() {
         p2NameInput.setAttribute("maxlength", "20");
         p2NameInput.setAttribute("name", "player2Name");
         p2NameInput.setAttribute("placeholder", "player 2 name goes here...");
+        p2NameInput.setAttribute("required", "");
 
         // construct form
         form.appendChild(optionHeader);
@@ -309,7 +341,38 @@ export default function interfacecontroller() {
             const shipInput = document.createElement("input");
             shipInput.setAttribute("type", "text");
             shipInput.setAttribute("placeholder", "placement position ex: B,1");
+            shipInput.setAttribute("required", "");
+            shipInput.setAttribute("maxlength", "4");
             const select = document.createElement("select");
+
+            // set form validation for coordinate format [letter,number]
+            shipInput.addEventListener("input", () => {
+                // force inputs to be in uppercase
+                shipInput.value = shipInput.value.toUpperCase();
+
+                // test for empty input field
+                const onlyWhiteSpace = /^\s*$/;
+                if (onlyWhiteSpace.test(shipInput.value)) {
+                    shipInput.setCustomValidity(
+                        "Cannot leave starting ship location blank",
+                    );
+                } else {
+                    shipInput.setCustomValidity("");
+
+                    // test for incorrect location format as long as there is something in the input field
+                    const letterThenNumber = /^[A-J],(10|[1-9])+$/;
+
+                    if (letterThenNumber.test(shipInput.value)) {
+                        shipInput.setCustomValidity("");
+                    } else {
+                        shipInput.setCustomValidity(
+                            "Must be in format: [letter,number] from A-J and 1-10. Ex: B,3",
+                        );
+                    }
+                }
+
+                shipInput.reportValidity();
+            });
 
             // for each loop, change the appropriate ship label and id value for the ship inputs
             if (i === 0) {
