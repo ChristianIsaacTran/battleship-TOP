@@ -455,15 +455,20 @@ export default function interfacecontroller() {
             // get player 2 form inputs and make player 2
             const formData = new FormData(form);
             const player2NameData = formData.get("player2Name");
-            const carrierPos = formData.get("carrier-p2-input");
+            const rawCarrierPos = formData.get("carrier-p2-input");
+            const carrierPos = rawCarrierPos.split(",");
             const carrierFace = formData.get("carrier-p2-dir");
-            const battleshipPos = formData.get("battleship-p2-input");
+            const rawBattleshipPos = formData.get("battleship-p2-input");
+            const battleshipPos = rawBattleshipPos.split(",");
             const battleshipFace = formData.get("battleship-p2-dir");
-            const cruiserPos = formData.get("cruiser-p2-input");
+            const rawCruiserPos = formData.get("cruiser-p2-input");
+            const cruiserPos = rawCruiserPos.split(",");
             const cruiserFace = formData.get("cruiser-p2-dir");
-            const submarinePos = formData.get("submarine-p2-input");
+            const rawSubmarinePos = formData.get("submarine-p2-input");
+            const submarinePos = rawSubmarinePos.split(",");
             const submarineFace = formData.get("submarine-p2-dir");
-            const destroyerPos = formData.get("destroyer-p2-input");
+            const rawDestroyerPos = formData.get("destroyer-p2-input");
+            const destroyerPos = rawDestroyerPos.split(",");
             const destroyerFace = formData.get("destroyer-p2-dir");
 
             // pass false for the isComputer boolean value in makePlayer2()
