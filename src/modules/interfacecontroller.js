@@ -224,18 +224,23 @@ export default function interfacecontroller() {
             form.addEventListener("submit", (e) => {
                 e.preventDefault();
 
-                // get player 1 form inputs and make player 1
+                // get player 1 form inputs and make player 1. Convert string coordinates to array form: ["B","3"]
                 const formData = new FormData(form);
                 const player1NameData = formData.get("player1Name");
-                const carrierPos = formData.get("carrier-p1-input");
+                const rawCarrierPos = formData.get("carrier-p1-input");
+                const carrierPos = rawCarrierPos.split(",");
                 const carrierFace = formData.get("carrier-p1-dir");
-                const battleshipPos = formData.get("battleship-p1-input");
+                const rawBattleshipPos = formData.get("battleship-p1-input");
+                const battleshipPos = rawBattleshipPos.split(",");
                 const battleshipFace = formData.get("battleship-p1-dir");
-                const cruiserPos = formData.get("cruiser-p1-input");
+                const rawCruiserPos = formData.get("cruiser-p1-input");
+                const cruiserPos = rawCruiserPos.split(",");
                 const cruiserFace = formData.get("cruiser-p1-dir");
-                const submarinePos = formData.get("submarine-p1-input");
+                const rawSubmarinePos = formData.get("submarine-p1-input");
+                const submarinePos = rawSubmarinePos.split(",");
                 const submarineFace = formData.get("submarine-p1-dir");
-                const destroyerPos = formData.get("destroyer-p1-input");
+                const rawDestroyerPos = formData.get("destroyer-p1-input");
+                const destroyerPos = rawDestroyerPos.split(",");
                 const destroyerFace = formData.get("destroyer-p1-dir");
 
                 gameControl.makePlayer1(
