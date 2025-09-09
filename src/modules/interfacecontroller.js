@@ -77,6 +77,44 @@ export default function interfacecontroller() {
         });
     }
 
+    // checks if the board has valid ship placements, and returns true if valid, or false if any invalid ship positions given
+    function checkValidPositions(player1Option = false, player2Option = false) {
+        // plan is to check if the board is filled with 17 spaces for the ship board since all ships should take up 17 spaces in total
+        if (player1Option === true && player2Option === false) {
+            const player1Board = gameControl
+                .getPlayer1()
+                .getGameBoard()
+                .getBoard();
+            let player1ShipSpaceCounter = 0;
+
+            player1Board.forEach(() => {
+                player1ShipSpaceCounter += 1;
+            });
+
+            if (player1ShipSpaceCounter === 17) {
+                return true;
+            }
+
+            return false;
+        } else if (player2Option === true && player1Option === false) {
+            const player2Board = gameControl
+                .getPlayer2()
+                .getGameBoard()
+                .getBoard();
+            let player2ShipSpaceCounter = 0;
+
+            player2Board.forEach(() => {
+                player2ShipSpaceCounter += 1;
+            });
+
+            if (player2ShipSpaceCounter === 17) {
+                return true;
+            }
+
+            return false;
+        }
+    }
+
     // renders the player 1 ship placement menu
     function renderPlayer1Options(playerVsComputer = false) {
         // generate html items
@@ -257,12 +295,17 @@ export default function interfacecontroller() {
                     destroyerFace,
                 );
 
-                // get and show player 2 modal after player 1
-                dialog.close();
-                const player2Options = document.querySelector(
-                    ".pvp-player2-options",
-                );
-                player2Options.showModal();
+                // submit check to see if the ship placements were valid
+                if (checkValidPositions(true, false)) {
+                    // get and show player 2 modal after player 1
+                    dialog.close();
+                    const player2Options = document.querySelector(
+                        ".pvp-player2-options",
+                    );
+                    player2Options.showModal();
+                } else {
+                    alert("overlapping/invalid ship positions");
+                }
             });
         } else if (playerVsComputer === true) {
             form.addEventListener("submit", (e) => {
@@ -271,15 +314,20 @@ export default function interfacecontroller() {
                 // get player 1 form inputs and make player 1
                 const formData = new FormData(form);
                 const player1NameData = formData.get("player1Name");
-                const carrierPos = formData.get("carrier-p1-input");
+                const rawCarrierPos = formData.get("carrier-p1-input");
+                const carrierPos = rawCarrierPos.split(",");
                 const carrierFace = formData.get("carrier-p1-dir");
-                const battleshipPos = formData.get("battleship-p1-input");
+                const rawBattleshipPos = formData.get("battleship-p1-input");
+                const battleshipPos = rawBattleshipPos.split(",");
                 const battleshipFace = formData.get("battleship-p1-dir");
-                const cruiserPos = formData.get("cruiser-p1-input");
+                const rawCruiserPos = formData.get("cruiser-p1-input");
+                const cruiserPos = rawCruiserPos.split(",");
                 const cruiserFace = formData.get("cruiser-p1-dir");
-                const submarinePos = formData.get("submarine-p1-input");
+                const rawSubmarinePos = formData.get("submarine-p1-input");
+                const submarinePos = rawSubmarinePos.split(",");
                 const submarineFace = formData.get("submarine-p1-dir");
-                const destroyerPos = formData.get("destroyer-p1-input");
+                const rawDestroyerPos = formData.get("destroyer-p1-input");
+                const destroyerPos = rawDestroyerPos.split(",");
                 const destroyerFace = formData.get("destroyer-p1-dir");
 
                 gameControl.makePlayer1(
@@ -296,12 +344,17 @@ export default function interfacecontroller() {
                     destroyerFace,
                 );
 
-                // since its player vs computer, after creating player 1, make a computer player 2
-                dialog.close();
-                gameControl.makePlayer2("", true);
+                // submit check to see if the ship placements were valid
+                if (checkValidPositions(true, false)) {
+                    // get and show player 2 modal after player 1
+                    dialog.close();
 
-                console.log(gameControl.getPlayer1().getName());
-                console.log(gameControl.getPlayer2().getName());
+                    // since its player vs computer, after creating player 1, make a computer player 2
+                    gameControl.makePlayer2("", true);
+                    
+                } else {
+                    alert("overlapping/invalid ship positions");
+                }
             });
         }
     }
@@ -487,10 +540,11 @@ export default function interfacecontroller() {
                 destroyerFace,
             );
 
-            console.log(gameControl.getPlayer1().getName());
-            console.log(gameControl.getPlayer2().getName());
-
-            dialog.close();
+            if (checkValidPositions(false, true)) {
+                dialog.close();
+            } else {
+                alert("overlapping/invalid ship positions");
+            }
         });
     }
 
