@@ -253,7 +253,7 @@ export default function interfacecontroller() {
                     shipInput.setCustomValidity("");
 
                     // test for incorrect location format as long as there is something in the input field
-                    const letterThenNumber = /^[A-J],(10|[1-9])+$/;
+                    const letterThenNumber = /^[A-J],(10|[1-9])$/;
 
                     if (letterThenNumber.test(shipInput.value)) {
                         shipInput.setCustomValidity("");
@@ -497,7 +497,7 @@ export default function interfacecontroller() {
                     shipInput.setCustomValidity("");
 
                     // test for incorrect location format as long as there is something in the input field
-                    const letterThenNumber = /^[A-J],(10|[1-9])+$/;
+                    const letterThenNumber = /^[A-J],(10|[1-9])$/;
 
                     if (letterThenNumber.test(shipInput.value)) {
                         shipInput.setCustomValidity("");
