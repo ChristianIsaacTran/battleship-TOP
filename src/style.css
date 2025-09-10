@@ -31,16 +31,18 @@ body {
     gap: 20px;
 }
 
-.grid-container-player1 {
+.grid-container {
     display: grid;
     background-color: white;
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: repeat(10, 1fr);
     width: 600px;
     height: 600px;
+    grid-column: 2/3;
+    grid-row: 2/3;
 }
 
-.grid-container-player1 > div {
+.grid-container > div {
     display: flex;
     border: 1px solid black;
     font-size: 1rem;
@@ -48,21 +50,54 @@ body {
     align-items: center;
 }
 
-.grid-container-player2 {
+.grid-container.option {
     display: grid;
     background-color: white;
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: repeat(10, 1fr);
-    width: 600px;
-    height: 600px;
+    width: 300px;
+    height: 300px;
+    grid-column: 2/3;
+    grid-row: 2/3;
 }
 
-.grid-container-player2 > div {
+.grid-container.option > div {
     display: flex;
     border: 1px solid black;
     font-size: 1rem;
     justify-content: center;
     align-items: center;
+}
+
+
+
+
+.number-axis.option {
+    font-size: 1.2rem;
+    display: flex;
+    grid-row: 1/2;
+    grid-column: 2/3;
+    justify-content: start;
+    align-content: center;
+    margin-left: 10px;
+    gap: 17.6px;
+}
+
+.letter-axis.option {
+    font-size: 1rem;
+    display: flex;
+    flex-direction: column;
+    grid-row:  2/3;
+    grid-column: 1/2;
+    align-items: center;
+    justify-content: center;
+    gap: 7.8px;
+}
+
+.board-container.option {
+    display: grid;
+    grid-template-columns: 50px 1fr;
+    grid-template-rows: auto 1fr;
 }
 
 .content-container {

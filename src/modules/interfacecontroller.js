@@ -115,6 +115,8 @@ export default function interfacecontroller() {
         }
     }
 
+    // generates a grid with html 
+
     // renders the player 1 ship placement menu
     function renderPlayer1Options(playerVsComputer = false) {
         // generate html items
