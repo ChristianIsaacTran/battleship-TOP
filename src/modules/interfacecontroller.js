@@ -115,7 +115,84 @@ export default function interfacecontroller() {
         }
     }
 
-    // generates a grid with html 
+    // generates a mini grid to display in the options menu to guide with making ship placement choices
+    function generateMiniGrid(attachHTMLElement, addonClassTag = "") {
+        const boardContainer = document.createElement("div");
+        const numberAxis = document.createElement("div");
+        const letterAxis = document.createElement("div");
+        const gridContainer = document.createElement("div");
+
+        if (addonClassTag === "") {
+            boardContainer.setAttribute("class", "board-container");
+            numberAxis.setAttribute("class", "number-axis");
+            letterAxis.setAttribute("class", "letter-axis");
+            gridContainer.setAttribute("class", "grid-container");
+        } else {
+            boardContainer.setAttribute("class", `board-container ${addonClassTag}`);
+            numberAxis.setAttribute("class", `number-axis ${addonClassTag}`);
+            letterAxis.setAttribute("class", `letter-axis ${addonClassTag}`);
+            gridContainer.setAttribute("class", `grid-container ${addonClassTag}`);
+        }
+
+        //loop to fill numberAxis
+        for (let i = 1; i <= 10; i += 1) {
+            const numberDiv = document.createElement("div");
+            numberDiv.textContent = i;
+            numberAxis.appendChild(numberDiv);
+        }
+
+        // add letter divs to letterAxis
+        const ADiv = document.createElement("div");
+        ADiv.textContent = "A";
+        const BDiv = document.createElement("div");
+        BDiv.textContent = "B";
+        const CDiv = document.createElement("div");
+        CDiv.textContent = "C";
+        const DDiv = document.createElement("div");
+        DDiv.textContent = "D";
+        const EDiv = document.createElement("div");
+        EDiv.textContent = "E";
+        const FDiv = document.createElement("div");
+        FDiv.textContent = "F";
+        const GDiv = document.createElement("div");
+        GDiv.textContent = "G";
+        const HDiv = document.createElement("div");
+        HDiv.textContent = "H";
+        const IDiv = document.createElement("div");
+        IDiv.textContent = "I";
+        const JDiv = document.createElement("div");
+        JDiv.textContent = "J";
+
+        letterAxis.appendChild(ADiv);
+        letterAxis.appendChild(BDiv);
+        letterAxis.appendChild(CDiv);
+        letterAxis.appendChild(DDiv);
+        letterAxis.appendChild(EDiv);
+        letterAxis.appendChild(FDiv);
+        letterAxis.appendChild(GDiv);
+        letterAxis.appendChild(HDiv);
+        letterAxis.appendChild(IDiv);
+        letterAxis.appendChild(JDiv);
+
+        // loop to fill grid container
+        let counter = 1;
+        for (let j = 1; j <= 100; j += 1) {
+            const gridCell = document.createElement("div");
+            gridCell.textContent = counter;
+            gridContainer.appendChild(gridCell);
+            counter += 1;
+            
+            if(j%10 === 0) {
+                counter = 1;
+            }
+        }
+
+        boardContainer.appendChild(numberAxis);
+        boardContainer.appendChild(letterAxis);
+        boardContainer.appendChild(gridContainer);
+
+        attachHTMLElement.appendChild(boardContainer);
+    }
 
     // renders the player 1 ship placement menu
     function renderPlayer1Options(playerVsComputer = false) {
@@ -256,6 +333,7 @@ export default function interfacecontroller() {
 
         // add form to dialog, then add dialog to HTML body
         dialog.appendChild(form);
+        generateMiniGrid(dialog, "option");
         const body = document.querySelector("body");
         body.appendChild(dialog);
 
@@ -353,7 +431,6 @@ export default function interfacecontroller() {
 
                     // since its player vs computer, after creating player 1, make a computer player 2
                     gameControl.makePlayer2("", true);
-                    
                 } else {
                     alert("overlapping/invalid ship positions");
                 }
@@ -500,6 +577,7 @@ export default function interfacecontroller() {
 
         // add form to dialog, then add dialog to HTML body
         dialog.appendChild(form);
+        generateMiniGrid(dialog, "option");
         const body = document.querySelector("body");
         body.appendChild(dialog);
 
