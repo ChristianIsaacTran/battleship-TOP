@@ -431,6 +431,8 @@ export default function interfacecontroller() {
 
                     // since its player vs computer, after creating player 1, make a computer player 2
                     gameControl.makePlayer2("", true);
+
+                    renderFrontPage();
                 } else {
                     alert("overlapping/invalid ship positions");
                 }
@@ -622,17 +624,42 @@ export default function interfacecontroller() {
 
             if (checkValidPositions(false, true)) {
                 dialog.close();
+                renderFrontPage();
             } else {
                 alert("overlapping/invalid ship positions");
             }
         });
     }
 
-    // renders the current boards for both players
-    function renderCurrentBoard() {}
+    // renders the header with the battleship title at the top of the webpage
+    function renderHeader(attachHTMLElement) {
+
+        //  battleship title at the top of the webpage 
+        const header = document.createElement("header");
+        const battleshipTitle = document.createElement("h1");
+        battleshipTitle.setAttribute("class","game-title");
+        battleshipTitle.textContent = "Battleship";
+
+        header.appendChild(battleshipTitle);
+        attachHTMLElement.appendChild(header);        
+    }
+
+
+    // renders the entire front page 
+    function renderFrontPage() {
+        const body = document.querySelector("body");
+
+        // render the header of the webpage, battleship title
+        renderHeader(body);
+
+        // content containers, holds player 1 and player 2 boards
+        const contentContainer = document.createElement("div");
+        contentContainer.setAttribute("class","content-container");
+
+    }
 
     return {
-        renderCurrentBoard,
+        renderFrontPage,
         renderGamemodeSelection,
     };
 }

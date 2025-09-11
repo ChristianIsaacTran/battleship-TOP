@@ -90,7 +90,7 @@ body {
     gap: 7.8px;
 }
 
-.board-container.option {
+.board-container {
     display: grid;
     grid-template-columns: 50px 1fr;
     grid-template-rows: auto 1fr;
