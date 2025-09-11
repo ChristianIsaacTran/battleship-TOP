@@ -128,10 +128,16 @@ export default function interfacecontroller() {
             letterAxis.setAttribute("class", "letter-axis");
             gridContainer.setAttribute("class", "grid-container");
         } else {
-            boardContainer.setAttribute("class", `board-container ${addonClassTag}`);
+            boardContainer.setAttribute(
+                "class",
+                `board-container ${addonClassTag}`,
+            );
             numberAxis.setAttribute("class", `number-axis ${addonClassTag}`);
             letterAxis.setAttribute("class", `letter-axis ${addonClassTag}`);
-            gridContainer.setAttribute("class", `grid-container ${addonClassTag}`);
+            gridContainer.setAttribute(
+                "class",
+                `grid-container ${addonClassTag}`,
+            );
         }
 
         //loop to fill numberAxis
@@ -181,8 +187,8 @@ export default function interfacecontroller() {
             gridCell.textContent = counter;
             gridContainer.appendChild(gridCell);
             counter += 1;
-            
-            if(j%10 === 0) {
+
+            if (j % 10 === 0) {
                 counter = 1;
             }
         }
@@ -633,20 +639,19 @@ export default function interfacecontroller() {
 
     // renders the header with the battleship title at the top of the webpage
     function renderHeader(attachHTMLElement) {
-
-        //  battleship title at the top of the webpage 
+        //  battleship title at the top of the webpage
         const header = document.createElement("header");
         const battleshipTitle = document.createElement("h1");
-        battleshipTitle.setAttribute("class","game-title");
+        battleshipTitle.setAttribute("class", "game-title");
         battleshipTitle.textContent = "Battleship";
 
         header.appendChild(battleshipTitle);
-        attachHTMLElement.appendChild(header);        
+        attachHTMLElement.appendChild(header);
     }
 
     // renders the sign that re-renders whenever the turn changes
     function renderTurnOrder(attachHTMLElement) {
-        // get the current turn player name 
+        // get the current turn player name
         const turnStatus = gameControl.getCurrentTurn();
         const currentTurnName = turnStatus.getName();
 
@@ -660,19 +665,323 @@ export default function interfacecontroller() {
         console.log(turnStatus);
     }
 
+    // gets the ship type when passed a shipObj and based on the shipLength
+    function getShipType(shipObj) {
+        const shipLength = shipObj.getLength();
 
-    // renders the entire front page 
+        if (shipLength === 5) {
+            return "carrier";
+        } else if (shipLength === 4) {
+            return "battleship";
+        } else if (shipLength === 3) {
+            return "cruiser";
+        } else if (shipLength === 2) {
+            return "destroyer";
+        }
+    }
+
+    // populates the grid with cell HTML attributes to color code ship spaces
+    function populateGrid(player1 = false, player2 = false) {
+        if (player1 === true && player2 === false) {
+            const player1Board = gameControl
+                .getPlayer1()
+                .getGameBoard()
+                .getBoard();
+            console.log(player1Board);
+            let cruiserCounter = 0;
+            player1Board.forEach((shipObj, coordinate) => {
+                console.log(`${shipObj} , ${coordinate}`);
+                let shipType = getShipType(shipObj);
+                const shipCoordinate = coordinate.split(",");
+                const shipX = shipCoordinate[0];
+                const shipY = shipCoordinate[1];
+
+                const htmlGridCell = document.querySelector(
+                    `.grid-container.player1 > .coord-${shipX}-${shipY}`,
+                );
+
+                if (shipType === "cruiser" && cruiserCounter === 3) {
+                    shipType = "submarine";
+                    htmlGridCell.setAttribute(
+                        "class",
+                        `coord-${shipX}-${shipY} submarine`,
+                    );
+                } else if (shipType === "cruiser" && cruiserCounter !== 3) {
+                    cruiserCounter += 1;
+                    htmlGridCell.setAttribute(
+                        "class",
+                        `coord-${shipX}-${shipY} cruiser`,
+                    );
+                }
+
+                if (shipType === "carrier") {
+                    htmlGridCell.setAttribute(
+                        "class",
+                        `coord-${shipX}-${shipY} carrier`,
+                    );
+                } else if (shipType === "battleship") {
+                    htmlGridCell.setAttribute(
+                        "class",
+                        `coord-${shipX}-${shipY} battleship`,
+                    );
+                } else if (shipType === "destroyer") {
+                    htmlGridCell.setAttribute(
+                        "class",
+                        `coord-${shipX}-${shipY} destroyer`,
+                    );
+                }
+            });
+        } else if (player2 === true && player1 === false) {
+            const player2Board = gameControl
+                .getPlayer2()
+                .getGameBoard()
+                .getBoard();
+            console.log(player2Board);
+            let cruiserCounter = 0;
+            player2Board.forEach((shipObj, coordinate) => {
+                console.log(`${shipObj} , ${coordinate}`);
+                let shipType = getShipType(shipObj);
+                const shipCoordinate = coordinate.split(",");
+                const shipX = shipCoordinate[0];
+                const shipY = shipCoordinate[1];
+
+                const htmlGridCell = document.querySelector(
+                    `.grid-container.player2 > .coord-${shipX}-${shipY}`,
+                );
+
+                if (shipType === "cruiser" && cruiserCounter === 3) {
+                    shipType = "submarine";
+                    htmlGridCell.setAttribute(
+                        "class",
+                        `coord-${shipX}-${shipY} submarine`,
+                    );
+                } else if (shipType === "cruiser" && cruiserCounter !== 3) {
+                    cruiserCounter += 1;
+                    htmlGridCell.setAttribute(
+                        "class",
+                        `coord-${shipX}-${shipY} cruiser`,
+                    );
+                }
+
+                if (shipType === "carrier") {
+                    htmlGridCell.setAttribute(
+                        "class",
+                        `coord-${shipX}-${shipY} carrier`,
+                    );
+                } else if (shipType === "battleship") {
+                    htmlGridCell.setAttribute(
+                        "class",
+                        `coord-${shipX}-${shipY} battleship`,
+                    );
+                } else if (shipType === "destroyer") {
+                    htmlGridCell.setAttribute(
+                        "class",
+                        `coord-${shipX}-${shipY} destroyer`,
+                    );
+                }
+            });
+        }
+    }
+
+    // generate a grid based on player object given with coodinate HTML attribute
+    function generateGrid(attachHTMLElement, player1 = false, player2 = false) {
+        if (player1 === true && player2 === false) {
+            const boardContainer = document.createElement("div");
+            boardContainer.setAttribute("class", "board-container player1");
+            const numberAxis = document.createElement("div");
+            numberAxis.setAttribute("class", "number-axis player1");
+            const letterAxis = document.createElement("div");
+            letterAxis.setAttribute("class", "letter-axis player1");
+            const gridContainer = document.createElement("div");
+            gridContainer.setAttribute("class", "grid-container player1");
+
+            // fill number and letter axis
+            for (let j = 1; j <= 10; j += 1) {
+                const numberDiv = document.createElement("div");
+                numberDiv.textContent = j;
+                numberAxis.appendChild(numberDiv);
+            }
+
+            // add letter divs to letterAxis
+            const ADiv = document.createElement("div");
+            ADiv.textContent = "A";
+            const BDiv = document.createElement("div");
+            BDiv.textContent = "B";
+            const CDiv = document.createElement("div");
+            CDiv.textContent = "C";
+            const DDiv = document.createElement("div");
+            DDiv.textContent = "D";
+            const EDiv = document.createElement("div");
+            EDiv.textContent = "E";
+            const FDiv = document.createElement("div");
+            FDiv.textContent = "F";
+            const GDiv = document.createElement("div");
+            GDiv.textContent = "G";
+            const HDiv = document.createElement("div");
+            HDiv.textContent = "H";
+            const IDiv = document.createElement("div");
+            IDiv.textContent = "I";
+            const JDiv = document.createElement("div");
+            JDiv.textContent = "J";
+
+            letterAxis.appendChild(ADiv);
+            letterAxis.appendChild(BDiv);
+            letterAxis.appendChild(CDiv);
+            letterAxis.appendChild(DDiv);
+            letterAxis.appendChild(EDiv);
+            letterAxis.appendChild(FDiv);
+            letterAxis.appendChild(GDiv);
+            letterAxis.appendChild(HDiv);
+            letterAxis.appendChild(IDiv);
+            letterAxis.appendChild(JDiv);
+
+            // fill player 1 grid with grid cells
+            let rowCounter = 1;
+            let colCounter = 1;
+            for (let i = 1; i <= 100; i += 1) {
+                const gridCell = document.createElement("div");
+                gridCell.setAttribute(
+                    "class",
+                    `coord-${colCounter}-${rowCounter}`,
+                );
+                colCounter += 1;
+                if (i % 10 === 0) {
+                    rowCounter += 1;
+                    colCounter = 1;
+                }
+                gridContainer.appendChild(gridCell);
+            }
+
+            boardContainer.appendChild(numberAxis);
+            boardContainer.appendChild(letterAxis);
+            boardContainer.appendChild(gridContainer);
+            attachHTMLElement.appendChild(boardContainer);
+
+        } else if (player2 === true && player1 === false) {
+            const boardContainer = document.createElement("div");
+            boardContainer.setAttribute("class", "board-container player2");
+            const numberAxis = document.createElement("div");
+            numberAxis.setAttribute("class", "number-axis player2");
+            const letterAxis = document.createElement("div");
+            letterAxis.setAttribute("class", "letter-axis player2");
+            const gridContainer = document.createElement("div");
+            gridContainer.setAttribute("class", "grid-container player2");
+
+            // fill number and letter axis
+            for (let j = 1; j <= 10; j += 1) {
+                const numberDiv = document.createElement("div");
+                numberDiv.textContent = j;
+                numberAxis.appendChild(numberDiv);
+            }
+
+            // add letter divs to letterAxis
+            const ADiv = document.createElement("div");
+            ADiv.textContent = "A";
+            const BDiv = document.createElement("div");
+            BDiv.textContent = "B";
+            const CDiv = document.createElement("div");
+            CDiv.textContent = "C";
+            const DDiv = document.createElement("div");
+            DDiv.textContent = "D";
+            const EDiv = document.createElement("div");
+            EDiv.textContent = "E";
+            const FDiv = document.createElement("div");
+            FDiv.textContent = "F";
+            const GDiv = document.createElement("div");
+            GDiv.textContent = "G";
+            const HDiv = document.createElement("div");
+            HDiv.textContent = "H";
+            const IDiv = document.createElement("div");
+            IDiv.textContent = "I";
+            const JDiv = document.createElement("div");
+            JDiv.textContent = "J";
+
+            letterAxis.appendChild(ADiv);
+            letterAxis.appendChild(BDiv);
+            letterAxis.appendChild(CDiv);
+            letterAxis.appendChild(DDiv);
+            letterAxis.appendChild(EDiv);
+            letterAxis.appendChild(FDiv);
+            letterAxis.appendChild(GDiv);
+            letterAxis.appendChild(HDiv);
+            letterAxis.appendChild(IDiv);
+            letterAxis.appendChild(JDiv);
+
+            // fill player 2 grid with grid cells
+            let rowCounter = 1;
+            let colCounter = 1;
+            for (let i = 1; i <= 100; i += 1) {
+                const gridCell = document.createElement("div");
+                gridCell.setAttribute(
+                    "class",
+                    `coord-${colCounter}-${rowCounter}`,
+                );
+                colCounter += 1;
+                if (i % 10 === 0) {
+                    rowCounter += 1;
+                    colCounter = 1;
+                }
+                gridContainer.appendChild(gridCell);
+            }
+
+            boardContainer.appendChild(numberAxis);
+            boardContainer.appendChild(letterAxis);
+            boardContainer.appendChild(gridContainer);
+            attachHTMLElement.appendChild(boardContainer);
+        }
+    }
+
+    // generates the main grids for both player 1 and player 2 in their current state
+    function renderContent(attachHTMLElement) {
+        // main content container that holds player 1 content and player 2 content
+        const contentContainer = document.createElement("div");
+        contentContainer.setAttribute("class", "content-container");
+
+        // render player 1 current board and attack history
+        const player1Content = document.createElement("div");
+        player1Content.setAttribute("class", "player1-content");
+        const player1Header = document.createElement("h2");
+        player1Header.setAttribute("class", "player1-header");
+        const player1Name = gameControl.getPlayer1().getName();
+        player1Header.textContent = player1Name;
+        player1Content.appendChild(player1Header);
+
+        // create player 1 board
+        generateGrid(player1Content, true, false);
+        contentContainer.appendChild(player1Content);
+
+        // render player 2 current board and attack history
+        const player2Content = document.createElement("div");
+        player2Content.setAttribute("class", "player2-content");
+        const player2Header = document.createElement("h2");
+        player2Header.setAttribute("class", "player2-header");
+        const player2Name = gameControl.getPlayer2().getName();
+        player2Header.textContent = player2Name;
+        player2Content.appendChild(player2Header);
+
+        // create player 2 board
+        generateGrid(player2Content, false, true);
+        contentContainer.appendChild(player2Content);
+
+        // attach content container to body
+        attachHTMLElement.appendChild(contentContainer);
+
+        // populate both player1 and player2 boards
+        populateGrid(true, false);
+        populateGrid(false, true);
+    }
+
+    // renders the entire front page
     function renderFrontPage() {
         const body = document.querySelector("body");
 
         // render the header of the webpage, battleship title
         renderHeader(body);
+        const header = document.querySelector("header");
+        renderTurnOrder(header);
 
-        renderTurnOrder(body);
-
-        // content containers, holds player 1 and player 2 boards
-        const contentContainer = document.createElement("div");
-        contentContainer.setAttribute("class","content-container");
+        // render the content container, which holds player 1 and player 2 boards
+        renderContent(body);
     }
 
     return {
