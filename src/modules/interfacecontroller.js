@@ -644,6 +644,22 @@ export default function interfacecontroller() {
         attachHTMLElement.appendChild(header);        
     }
 
+    // renders the sign that re-renders whenever the turn changes
+    function renderTurnOrder(attachHTMLElement) {
+        // get the current turn player name 
+        const turnStatus = gameControl.getCurrentTurn();
+        const currentTurnName = turnStatus.getName();
+
+        // create the current turn label
+        const h1 = document.createElement("h1");
+        h1.setAttribute("class", "current-turn");
+        h1.textContent = `Current turn: ${currentTurnName}`;
+
+        attachHTMLElement.appendChild(h1);
+
+        console.log(turnStatus);
+    }
+
 
     // renders the entire front page 
     function renderFrontPage() {
@@ -652,10 +668,11 @@ export default function interfacecontroller() {
         // render the header of the webpage, battleship title
         renderHeader(body);
 
+        renderTurnOrder(body);
+
         // content containers, holds player 1 and player 2 boards
         const contentContainer = document.createElement("div");
         contentContainer.setAttribute("class","content-container");
-
     }
 
     return {
