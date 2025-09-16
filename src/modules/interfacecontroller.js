@@ -856,7 +856,6 @@ export default function interfacecontroller() {
             boardContainer.appendChild(letterAxis);
             boardContainer.appendChild(gridContainer);
             attachHTMLElement.appendChild(boardContainer);
-
         } else if (player2 === true && player1 === false) {
             const boardContainer = document.createElement("div");
             boardContainer.setAttribute("class", "board-container player2");
@@ -971,6 +970,64 @@ export default function interfacecontroller() {
         populateGrid(false, true);
     }
 
+    // adds a hidden tag depending on whose turn it currently is
+    function renderHidden() {
+        const currentTurnName = gameControl.getCurrentTurn().getName();
+        const player1Name = gameControl.getPlayer1().getName();
+        const player2Name = gameControl.getPlayer2().getName();
+        const player2CompStatus = gameControl.getPlayer2().getComputerStatus();
+
+
+
+        // if player 1 turn, then hide player 2 (if player 2 is NOT a computer)
+        if (currentTurnName === player1Name && player2CompStatus === false) {
+            // check if player 1 censor bar exists and remove it
+            const p1Censor = document.querySelector(".censor");
+
+            if (p1Censor !== null && p1Censor !== undefined) {
+                p1Censor.remove();
+            }
+
+            const censor = document.createElement("div");
+            censor.setAttribute("class", "censor");
+            const boardContainerP2 = document.querySelector(
+                ".board-container.player2",
+            );
+            boardContainerP2.appendChild(censor);
+        } else if (
+            (currentTurnName === "Computer Player" ||
+                currentTurnName === player1Name) &&
+            player2CompStatus === true
+        ) {
+            //  if computer player's turn, make all of the grid cells grey and don't reveal board
+            const gridCellList = document.querySelectorAll(
+                ".grid-container.player2 > div",
+            );
+            gridCellList.forEach((gridCell) => {
+                const currentClassTag = gridCell.getAttribute("class");
+                const computerClassTag = `${currentClassTag} computer-hidden`;
+                gridCell.setAttribute("class", computerClassTag);
+            });
+        } else if (currentTurnName === player2Name) {
+            // if player 2 turn, the hide player 1
+
+            // check if player 1 censor bar exists and remove it
+            const p2Censor = document.querySelector(".censor");
+
+            if (p2Censor !== null && p2Censor !== undefined) {
+                p2Censor.remove();
+            }
+
+            const censor = document.createElement("div");
+            censor.setAttribute("class", "censor");
+
+            const boardContainerP1 = document.querySelector(
+                ".board-container.player1",
+            );
+            boardContainerP1.appendChild(censor);
+        }
+    }
+
     // renders the entire front page
     function renderFrontPage() {
         const body = document.querySelector("body");
@@ -982,6 +1039,9 @@ export default function interfacecontroller() {
 
         // render the content container, which holds player 1 and player 2 boards
         renderContent(body);
+
+        // render the hidden attribute depending on whose turn it is, hide the other board
+        renderHidden();
     }
 
     return {

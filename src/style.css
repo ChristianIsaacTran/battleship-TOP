@@ -269,3 +269,17 @@ input:valid {
     flex-direction: column;
     align-items: center;
 }
+
+.censor {
+    background-color: grey;
+    border: 2px solid black;
+    height: 450px; 
+    width: 450px;
+    position: relative;
+    grid-row: 2/3;
+    grid-column: 2/3;
+}
+
+.computer-hidden {
+    background-color: grey;
+}
