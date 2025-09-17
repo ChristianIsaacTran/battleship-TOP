@@ -1326,7 +1326,7 @@ export default function interfacecontroller() {
                         .getPlayer2()
                         .getGameBoard()
                         .getAttackHistory();
-                    console.log(player2AttackHistory);
+            
 
                     // generate hit or miss result
                     let attackResult;
@@ -1347,7 +1347,7 @@ export default function interfacecontroller() {
                         .getPlayer1()
                         .getGameBoard()
                         .getAttackHistory();
-                    console.log(player1AttackHistory);
+            
 
                     // generate hit or miss result
                     let attackResult;
