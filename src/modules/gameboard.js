@@ -286,6 +286,7 @@ export default function gameboard() {
         getAttackHistory,
         checkAllSunk,
         addGamePiece,
-        checkRepeatAttack
+        checkRepeatAttack,
+        convertLetterToCoor
     };
 }

@@ -294,6 +294,12 @@ footer {
     padding: 10px;
     width: 800px;
     height: 200px;
+    overflow: hidden;
+}
+
+.attack-history > li {
+    list-style-type: none;
+
 }
 
 .attack-form {

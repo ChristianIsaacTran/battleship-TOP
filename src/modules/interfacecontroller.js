@@ -661,7 +661,6 @@ export default function interfacecontroller() {
         h1.textContent = `Current turn: ${currentTurnName}`;
 
         attachHTMLElement.appendChild(h1);
-
     }
 
     // gets the ship type when passed a shipObj and based on the shipLength
@@ -1024,9 +1023,11 @@ export default function interfacecontroller() {
     // renders the footer of the webpage
     function renderFooter(attachHTMLElement) {
         const footer = document.createElement("footer");
-        const attackHistoryBox = document.createElement("div");
+        const attackHistoryBox = document.createElement("ul");
         attackHistoryBox.setAttribute("class", "attack-history");
-        attackHistoryBox.textContent = "> Please make an attack in the input box";
+        const firstLi = document.createElement("li");
+        firstLi.textContent = "> Please enter attack coordinates in input box";
+        attackHistoryBox.appendChild(firstLi);
         const attackInputContainer = document.createElement("div");
         attackInputContainer.setAttribute("class", "attack-container");
         const attackForm = document.createElement("form");
@@ -1035,15 +1036,15 @@ export default function interfacecontroller() {
         attackInput.setAttribute("type", "text");
         attackInput.setAttribute("class", "attack-input");
         attackInput.setAttribute("placeholder", "letter, number. ex: A,10");
-        attackInput.setAttribute("required","");
-        attackInput.setAttribute("maxlength","4");
-        attackInput.setAttribute("name","attack-coord");
+        attackInput.setAttribute("required", "");
+        attackInput.setAttribute("maxlength", "4");
+        attackInput.setAttribute("name", "attack-coord");
         const attackButton = document.createElement("button");
         attackButton.setAttribute("type", "submit");
         attackButton.setAttribute("class", "attack-button");
         attackButton.textContent = "Attack!";
 
-        // add form validity checks for attack input box 
+        // add form validity checks for attack input box
         attackInput.addEventListener("input", () => {
             // force inputs to be in uppercase
             attackInput.value = attackInput.value.toUpperCase();
@@ -1074,29 +1075,25 @@ export default function interfacecontroller() {
 
         // upon successful submission event of the form, send attack through gameControl and re-render/update everything
         attackForm.addEventListener("submit", (e) => {
-            // prevent the page from refreshing and clear textbox 
+            // prevent the page from refreshing and clear textbox
             e.preventDefault();
 
-
-            // get attack Y position and attack X position from the value of the input 
+            // get attack Y position and attack X position from the value of the input
             const formData = new FormData(attackForm);
             const attackArr = formData.get("attack-coord").split(",");
-            const attackY = attackArr[0];
-            const attackX = attackArr[1];
-
-            console.log(attackY);
-            console.log(attackX);
+            let attackY = attackArr[0];
+            let attackX = attackArr[1];
 
             // send coordinates to gameControl
             const gameStatus = gameControl.playRound(attackY, attackX);
 
             // win is detected, open reset modal that refreshes the webpage
-            if(gameStatus === true) {
+            if (gameStatus === true) {
                 // reset modal
                 const resetModal = document.createElement("dialog");
                 const resetButton = document.createElement("button");
-                resetModal.setAttribute("class","reset-modal");
-                resetButton.setAttribute("class","reset-button");
+                resetModal.setAttribute("class", "reset-modal");
+                resetButton.setAttribute("class", "reset-button");
                 resetButton.textContent = "Reset Game";
                 resetModal.appendChild(resetButton);
                 attachHTMLElement.appendChild(resetModal);
@@ -1107,19 +1104,88 @@ export default function interfacecontroller() {
                 });
             }
 
-
-            // reset form for next attack 
+            // reset form for next attack
             attackForm.reset();
 
-            // re-render currentTurn to reflect new player turn 
-            const prevCurrentTurn = document.querySelector(".current-turn");
-            prevCurrentTurn.remove();
-            const header = document.querySelector("header");
-            renderTurnOrder(header);
+            // if computer player then replace attackY and attackX
+            if (gameControl.getCompAttack() !== undefined && gameControl.getCompAttack() !== null) {
+                const computerAttack = gameControl.getCompAttack();
+                attackY = computerAttack[0];
+                attackX = computerAttack[1];
+            }
 
-            // add onto the attack history dialog box
-            
+            // only re-render page if the input attack was valid
+            if (gameStatus !== "error") {
+                // re-render currentTurn to reflect new player turn
+                const prevCurrentTurn = document.querySelector(".current-turn");
+                prevCurrentTurn.remove();
+                const header = document.querySelector("header");
+                renderTurnOrder(header);
 
+                // add onto the attack history dialog box
+                const currentTurnName = gameControl.getCurrentTurn().getName();
+                const player1Name = gameControl.getPlayer1().getName();
+                const player2Name = gameControl.getPlayer2().getName();
+                const yTemp = gameControl
+                    .getPlayer1()
+                    .getGameBoard()
+                    .convertLetterToCoor(attackY);
+                const combinedPositionString = `${attackX},${yTemp}`;
+                const newLi = document.createElement("li");
+
+                // get previous attack history and update it upon turn change
+                if (currentTurnName === player2Name) {
+                    // after player 1 turn, then update history with player 2 attack history board
+                    const player2AttackHistory = gameControl
+                        .getPlayer2()
+                        .getGameBoard()
+                        .getAttackHistory();
+                    console.log(player2AttackHistory);
+
+                    // generate hit or miss result
+                    let attackResult;
+                    if (
+                        player2AttackHistory.get(combinedPositionString) ===
+                        "miss"
+                    ) {
+                        attackResult = "miss";
+                    } else {
+                        attackResult = "hit!";
+                    }
+
+                    newLi.textContent = `> ${player1Name} attacks ${player2Name} at [${attackY},${attackX}] and it's a ${attackResult}`;
+                    attackHistoryBox.prepend(newLi);
+                } else if (currentTurnName === player1Name) {
+                    // after player 2 turn, then update history with player 2 attack history
+                    const player1AttackHistory = gameControl
+                        .getPlayer1()
+                        .getGameBoard()
+                        .getAttackHistory();
+                    console.log(player1AttackHistory);
+
+                    // generate hit or miss result
+                    let attackResult;
+                    if (
+                        player1AttackHistory.get(combinedPositionString) ===
+                        "miss"
+                    ) {
+                        attackResult = "miss";
+                    } else {
+                        attackResult = "hit!";
+                    }
+
+                    newLi.textContent = `> ${player2Name} attacks ${player1Name} at [${attackY},${attackX}] and it's a ${attackResult}`;
+                    attackHistoryBox.prepend(newLi);
+                }
+            }  
+
+            // reset compAttack if it has a value
+            gameControl.setCompAttack(undefined);
+
+            // if the next turn is a computer, trigger this event again to render computer attack
+            if (gameControl.getCurrentTurn().getComputerStatus() === true) {
+                attackForm.dispatchEvent(new Event("submit"));
+            }
         });
 
         attackForm.appendChild(attackInput);

@@ -3,6 +3,7 @@ import player from "./player.js";
 export default function gamecontroller() {
     let player1;
     let player2;
+    let player2ComputerAttack;
     let currentTurn;
 
     // makes player 1 with the player1Name parameter, and place ships. Player 1 cannot be a computer
@@ -98,7 +99,8 @@ export default function gamecontroller() {
      given attack coordinates, send the attack to the opposing player depending on whoever the current turn is, then check for a 
      win condition on the opposing player. If no win, then swap turns. Also check if player 2 is a computer or not.
      Will return true if a win is detected, false if no win
-    */
+     will return "error" if the playRound erroed out
+     */
     function playRound(attackCoorY, attackCoorX) {
         // current turn player1 =  Attack player 2 with given coordinates then check if all player 2's ships have been sunk. if not, swap to player 2
         if (currentTurn === player1) {
@@ -108,7 +110,7 @@ export default function gamecontroller() {
             // check if the attack is a repeat attack
             if(player2.getGameBoard().checkRepeatAttack(player1Attack)) {
                 alert("cannot attack coordinate that has already been attacked");
-                return false;
+                return "error";
             }
 
             // send player 1 attack to player 2 board
@@ -133,10 +135,12 @@ export default function gamecontroller() {
             // get random attack from player 2's send attack function
             const player2Attack = player2.sendAttack();
 
+            player2ComputerAttack = player2Attack;
+
             // send player 2 Computer attack to player 1 board
             player1.playerReceiveAttack(player2Attack);
 
-            // check win condition. If player 1 ships have been sunk after attack, declare winner
+            // check win congit dition. If player 1 ships have been sunk after attack, declare winner
             if (player1.checkPlayerLostGame()) {
                 alert(
                     "All ships from player 1 have been sunk. Player 2 (COMPUTER) wins!",
@@ -157,7 +161,7 @@ export default function gamecontroller() {
             // check if the attack is a repeat attack
             if(player1.getGameBoard().checkRepeatAttack(player2Attack)) {
                 alert("cannot attack coordinate that has already been attacked");
-                return false;
+                return "error";
             }
 
             // send player 2 attack to player 1 board
@@ -188,6 +192,16 @@ export default function gamecontroller() {
         }
     }
 
+    // utility function to return the generated computer player 2 attack 
+    function getCompAttack() {
+        return player2ComputerAttack;
+    }
+
+    // utility function to make comp attack undefined
+    function setCompAttack(input) {
+        player2ComputerAttack = input;
+    }
+
     return {
         makePlayer1,
         getPlayer1,
@@ -196,5 +210,7 @@ export default function gamecontroller() {
         getCurrentTurn,
         playRound,
         swapCurrentTurn,
+        getCompAttack,
+        setCompAttack
     };
 }
