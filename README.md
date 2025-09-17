@@ -48,4 +48,7 @@ This is a projet that combines the javascript logic of battleship with HTML dom 
         - computer players (coordinates chosen will be random)
     - each player will have their own gameboard.
 
+note: I am going to convert the gamecontroller.js into a module that manages DOM interactions with the objects that I am using in the 
+game of battleship. This is to drive the game.
 
+(8/27/2025) - My current goal right now is to display the ship placement and rendered information on the DOM.

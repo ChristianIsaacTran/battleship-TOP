@@ -1,0 +1,335 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+li {
+    padding: 0;
+    margin: 0;
+}
+
+header {
+    display: flex; 
+    flex-direction: column; 
+    align-items: center;
+}
+
+.game-title {
+    font-size: 4rem;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.grid-container {
+    display: grid;
+    background-color: white;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    width: 450px;
+    height: 450px;
+    grid-column: 2/3;
+    grid-row: 2/3;
+}
+
+.censor {
+    display: grid;
+    background-color: lightgrey;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    width: 450px;
+    height: 450px;
+    grid-column: 2/3;
+    grid-row: 2/3;
+}
+
+.grid-container > div, .censor > div {
+    display: flex;
+    border: 1px solid black;
+    font-size: 1.5rem;
+    text-shadow: 0px 1px 5px black;
+    justify-content: center;
+    align-items: center;
+}
+
+.grid-container.option {
+    display: grid;
+    background-color: white;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    width: 300px;
+    height: 300px;
+    grid-column: 2/3;
+    grid-row: 2/3;
+}
+
+.grid-container.option > div {
+    display: flex;
+    border: 1px solid black;
+    font-size: 1rem;
+    justify-content: center;
+    align-items: center;
+    text-shadow: none;
+}
+
+.number-axis.option {
+    font-size: 1.2rem;
+    display: flex;
+    grid-row: 1/2;
+    grid-column: 2/3;
+    justify-content: start;
+    align-content: center;
+    margin-left: 10px;
+    gap: 17.6px;
+}
+
+.letter-axis.option {
+    font-size: 1rem;
+    display: flex;
+    flex-direction: column;
+    grid-row: 2/3;
+    grid-column: 1/2;
+    align-items: center;
+    justify-content: start;
+    gap: 7.8px;
+}
+
+.board-container.option {
+    display: grid;
+    grid-template-columns: 50px 1fr;
+    grid-template-rows: auto 1fr;
+}
+
+.content-container {
+    display: flex;
+    gap: 100px;
+}
+
+.player1-header,
+.player2-header {
+    font-size: 2rem;
+    text-decoration: underline;
+}
+
+.attack-history-textbox {
+    border: 1px solid black;
+    width: 1000px;
+    height: 150px;
+    font-size: 1.5rem;
+    padding: 10px;
+}
+
+.current-turn-message {
+    color: green;
+}
+
+.gamemode-selection[open] {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.gamemode-selection > p {
+    font-size: 2rem;
+}
+
+.gamemode-button-container {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 30px;
+}
+
+.gamemode-button-container > button {
+    padding: 30px;
+    font-size: 1.5rem;
+    width: 400px;
+}
+
+.pvp-player1-options[open],
+.pvp-player2-options[open] {
+    width: 900px;
+    display: flex;
+    align-items: center;
+}
+
+.name-group {
+    display: flex;
+    gap: 10px;
+}
+
+.name-group > label {
+    font-size: 1.5rem;
+}
+
+.player1-form,
+.player2-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.player1-form > p,
+.player2-form > p {
+    font-size: 2rem;
+}
+
+.ship-group {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+}
+
+.input-group {
+    display: flex;
+    gap: 20px;
+}
+
+.input-group > select {
+    width: 100px;
+    height: 50px;
+}
+
+.input-group > input[type="text"] {
+    width: 300px;
+    height: 50px;
+}
+
+.ship-group > label {
+    font-size: 1.5rem;
+}
+
+.player1-form > .form-submit,
+.player2-form > .form-submit {
+    font-size: 2rem;
+    width: 300px;
+    align-self: center;
+}
+
+input:invalid {
+    border: 2px solid red;
+}
+
+input:valid {
+    border: 2px solid green;
+}
+
+.carrier {
+    background-color: brown;
+}
+
+.battleship {
+    background-color: blue;
+}
+
+.cruiser {
+    background-color: green;
+}
+
+.submarine {
+    background-color: deeppink;
+}
+
+.destroyer {
+    background-color: yellow;
+}
+
+.board-container.player1, .board-container.player2 {
+    display: grid;
+    grid-template-columns: 50px 1fr;
+    grid-template-rows: auto 1fr;
+}
+
+.letter-axis.player1, .letter-axis.player2 {
+    font-size: 1.7rem;
+    display: flex;
+    flex-direction: column;
+    grid-row: 2/3;
+    grid-column: 1/2;
+    align-items: center;
+    justify-content: start;
+    gap: 7.2px;
+}
+
+.number-axis.player1, .number-axis.player2 {
+    font-size: 1.7rem;
+    display: flex;
+    grid-row: 1/2;
+    grid-column: 2/3;
+    justify-content: start;
+    align-content: center;
+    margin-left: 10px;
+    gap: 28px;
+}
+
+.player1-content, .player2-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.computer-hidden {
+    background-color: grey;
+}
+
+footer {
+    display: flex;
+    gap: 30px;
+}
+
+.attack-history {
+    border: 2px solid black;
+    padding: 10px;
+    width: 800px;
+    height: 200px;
+    overflow: hidden;
+}
+
+.attack-history > li {
+    list-style-type: none;
+
+}
+
+.attack-form {
+    display:flex;
+    gap: 20px;
+}
+
+.attack-input {
+    height: 50px;
+}
+
+.attack-button {
+    padding: 10px;
+}
+
+.reset-modal {
+    padding: 100px;
+}
+
+.reset-button {
+    font-size: 3rem;
+}
+
+.miss {
+    color: black;
+}
+
+.hit {
+    color:red;
+}

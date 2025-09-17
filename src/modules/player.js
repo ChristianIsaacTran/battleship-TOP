@@ -7,6 +7,9 @@ export default function player() {
     let computerStatus;
     let playerLose = false;
 
+    // computer attack history
+    const compAttackHistory = new Map();
+
     // letter-coordinate reference
     const letterMap = new Map();
     letterMap.set(1, "A");
@@ -230,7 +233,24 @@ export default function player() {
 
     // utility function to send an attack, returns the coordinates as an array to pass to a gameboard's receiveAttack() function
     function sendAttack(yPos, xPos) {
-        return [yPos, xPos];
+        // if the player is real, make an attack with input parameters. Otherwise generate a random coordinate
+        if (computerStatus === false) {
+            return [yPos, xPos];
+        }
+        while (true) {
+            const randomX = Math.floor(Math.random() * 10) + 1;
+            const randomY = letterMap.get(Math.floor(Math.random() * 10) + 1);
+            const combinedPositionString = `${randomY},${randomX}`;
+
+            /* 
+            if the computer has NOT attacked at the randomly generated location before, then add it to the attack history and return.
+            otherwise, keep looping until we get a coordinate that the computer hasn't attacked before.
+            */
+            if(!compAttackHistory.has(combinedPositionString)) {
+                compAttackHistory.set(combinedPositionString, "");
+                return [randomY, randomX];
+            }
+        }
     }
 
     /*
@@ -248,13 +268,11 @@ export default function player() {
         playerLose = boolean;
     }
 
-    // returns a boolean and a console.log() message to declare if this player lost.
+    // returns a boolean if the player lost the game
     function checkPlayerLostGame() {
-        if(playerLose) {
-            console.log(`All ships have been sunk. ${playerName} loses`);
+        if (playerLose) {
             return true;
         }
-
         return false;
     }
 
@@ -268,6 +286,6 @@ export default function player() {
         sendAttack,
         playerReceiveAttack,
         checkPlayerLostGame,
-        setPlayerLose
+        setPlayerLose,
     };
 }
