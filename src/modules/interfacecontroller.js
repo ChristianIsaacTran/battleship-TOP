@@ -662,7 +662,6 @@ export default function interfacecontroller() {
 
         attachHTMLElement.appendChild(h1);
 
-        console.log(turnStatus);
     }
 
     // gets the ship type when passed a shipObj and based on the shipLength
@@ -687,10 +686,8 @@ export default function interfacecontroller() {
                 .getPlayer1()
                 .getGameBoard()
                 .getBoard();
-            console.log(player1Board);
             let cruiserCounter = 0;
             player1Board.forEach((shipObj, coordinate) => {
-                console.log(`${shipObj} , ${coordinate}`);
                 let shipType = getShipType(shipObj);
                 const shipCoordinate = coordinate.split(",");
                 const shipX = shipCoordinate[0];
@@ -736,10 +733,8 @@ export default function interfacecontroller() {
                 .getPlayer2()
                 .getGameBoard()
                 .getBoard();
-            console.log(player2Board);
             let cruiserCounter = 0;
             player2Board.forEach((shipObj, coordinate) => {
-                console.log(`${shipObj} , ${coordinate}`);
                 let shipType = getShipType(shipObj);
                 const shipCoordinate = coordinate.split(",");
                 const shipX = shipCoordinate[0];
@@ -977,8 +972,6 @@ export default function interfacecontroller() {
         const player2Name = gameControl.getPlayer2().getName();
         const player2CompStatus = gameControl.getPlayer2().getComputerStatus();
 
-
-
         // if player 1 turn, then hide player 2 (if player 2 is NOT a computer)
         if (currentTurnName === player1Name && player2CompStatus === false) {
             // check if player 1 censor bar exists and remove it
@@ -1028,11 +1021,121 @@ export default function interfacecontroller() {
         }
     }
 
+    // renders the footer of the webpage
+    function renderFooter(attachHTMLElement) {
+        const footer = document.createElement("footer");
+        const attackHistoryBox = document.createElement("div");
+        attackHistoryBox.setAttribute("class", "attack-history");
+        attackHistoryBox.textContent = "> Please make an attack in the input box";
+        const attackInputContainer = document.createElement("div");
+        attackInputContainer.setAttribute("class", "attack-container");
+        const attackForm = document.createElement("form");
+        attackForm.setAttribute("class", "attack-form");
+        const attackInput = document.createElement("input");
+        attackInput.setAttribute("type", "text");
+        attackInput.setAttribute("class", "attack-input");
+        attackInput.setAttribute("placeholder", "letter, number. ex: A,10");
+        attackInput.setAttribute("required","");
+        attackInput.setAttribute("maxlength","4");
+        attackInput.setAttribute("name","attack-coord");
+        const attackButton = document.createElement("button");
+        attackButton.setAttribute("type", "submit");
+        attackButton.setAttribute("class", "attack-button");
+        attackButton.textContent = "Attack!";
+
+        // add form validity checks for attack input box 
+        attackInput.addEventListener("input", () => {
+            // force inputs to be in uppercase
+            attackInput.value = attackInput.value.toUpperCase();
+
+            // test for empty input field
+            const onlyWhiteSpace = /^\s*$/;
+            if (onlyWhiteSpace.test(attackInput.value)) {
+                attackInput.setCustomValidity(
+                    "Cannot leave attack coordinate blank",
+                );
+            } else {
+                attackInput.setCustomValidity("");
+
+                // test for incorrect location format as long as there is something in the input field
+                const letterThenNumber = /^[A-J],(10|[1-9])$/;
+
+                if (letterThenNumber.test(attackInput.value)) {
+                    attackInput.setCustomValidity("");
+                } else {
+                    attackInput.setCustomValidity(
+                        "Must be in format: [letter,number] from A-J and 1-10. Ex: B,3",
+                    );
+                }
+            }
+
+            attackInput.reportValidity();
+        });
+
+        // upon successful submission event of the form, send attack through gameControl and re-render/update everything
+        attackForm.addEventListener("submit", (e) => {
+            // prevent the page from refreshing and clear textbox 
+            e.preventDefault();
+
+
+            // get attack Y position and attack X position from the value of the input 
+            const formData = new FormData(attackForm);
+            const attackArr = formData.get("attack-coord").split(",");
+            const attackY = attackArr[0];
+            const attackX = attackArr[1];
+
+            console.log(attackY);
+            console.log(attackX);
+
+            // send coordinates to gameControl
+            const gameStatus = gameControl.playRound(attackY, attackX);
+
+            // win is detected, open reset modal that refreshes the webpage
+            if(gameStatus === true) {
+                // reset modal
+                const resetModal = document.createElement("dialog");
+                const resetButton = document.createElement("button");
+                resetModal.setAttribute("class","reset-modal");
+                resetButton.setAttribute("class","reset-button");
+                resetButton.textContent = "Reset Game";
+                resetModal.appendChild(resetButton);
+                attachHTMLElement.appendChild(resetModal);
+                resetModal.showModal();
+
+                resetButton.addEventListener("click", () => {
+                    location.reload();
+                });
+            }
+
+
+            // reset form for next attack 
+            attackForm.reset();
+
+            // re-render currentTurn to reflect new player turn 
+            const prevCurrentTurn = document.querySelector(".current-turn");
+            prevCurrentTurn.remove();
+            const header = document.querySelector("header");
+            renderTurnOrder(header);
+
+            // add onto the attack history dialog box
+            
+
+        });
+
+        attackForm.appendChild(attackInput);
+        attackForm.appendChild(attackButton);
+        attackInputContainer.appendChild(attackForm);
+        footer.appendChild(attackHistoryBox);
+        footer.appendChild(attackInputContainer);
+
+        attachHTMLElement.appendChild(footer);
+    }
+
     // renders the entire front page
     function renderFrontPage() {
         const body = document.querySelector("body");
 
-        // render the header of the webpage, battleship title
+        // render the header of the webpage, battleship title and turn order
         renderHeader(body);
         const header = document.querySelector("header");
         renderTurnOrder(header);
@@ -1041,7 +1144,11 @@ export default function interfacecontroller() {
         renderContent(body);
 
         // render the hidden attribute depending on whose turn it is, hide the other board
+        // note: make it so that when the board is hidden, show the previous attacks/successful attacks
         renderHidden();
+
+        // render footer of the webpage, attack history textbox and attack + submission button
+        renderFooter(body);
     }
 
     return {

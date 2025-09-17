@@ -105,12 +105,18 @@ export default function gamecontroller() {
             // convert coordinates into attack array coordinates
             const player1Attack = player1.sendAttack(attackCoorY, attackCoorX);
 
+            // check if the attack is a repeat attack
+            if(player2.getGameBoard().checkRepeatAttack(player1Attack)) {
+                alert("cannot attack coordinate that has already been attacked");
+                return false;
+            }
+
             // send player 1 attack to player 2 board
             player2.playerReceiveAttack(player1Attack);
 
             // check if player 2 lost the game after attack
             if (player2.checkPlayerLostGame()) {
-                console.log(
+                alert(
                     "All ships from player 2 have been sunk. Player 1 wins!",
                 );
                 return true;
@@ -132,7 +138,7 @@ export default function gamecontroller() {
 
             // check win condition. If player 1 ships have been sunk after attack, declare winner
             if (player1.checkPlayerLostGame()) {
-                console.log(
+                alert(
                     "All ships from player 1 have been sunk. Player 2 (COMPUTER) wins!",
                 );
                 return true;
@@ -147,6 +153,12 @@ export default function gamecontroller() {
         ) {
             // convert coordinates into attack array coordinates
             const player2Attack = player2.sendAttack(attackCoorY, attackCoorX);
+
+            // check if the attack is a repeat attack
+            if(player1.getGameBoard().checkRepeatAttack(player2Attack)) {
+                alert("cannot attack coordinate that has already been attacked");
+                return false;
+            }
 
             // send player 2 attack to player 1 board
             player1.playerReceiveAttack(player2Attack);

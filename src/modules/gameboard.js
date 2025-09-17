@@ -203,6 +203,20 @@ export default function gameboard() {
         return true;
     }
 
+    // checks for repeat attacks and returns true if yes repeat detected or false if repeat is not detected
+    function checkRepeatAttack(coordinates) {
+        const xPos = Number(coordinates[1]);
+        const yPos = convertLetterToCoor(coordinates[0]);
+        const combinedPositionString = `${xPos},${yPos}`;
+
+        // initial check to prevent attacking the same coordinates more than once
+        if (attackHistory.has(combinedPositionString)) {
+            return true;
+        }
+
+        return false;
+    }
+
     /*
     receiveAttack() takes in a coordinate indicating an incoming attack and returns true if the attack is a hit, or false if the attack is a miss.
     for every attack given, the coordinates and the attack itself will be stored in a Map() called attackHistory. This is to keep 
@@ -272,5 +286,6 @@ export default function gameboard() {
         getAttackHistory,
         checkAllSunk,
         addGamePiece,
+        checkRepeatAttack
     };
 }
