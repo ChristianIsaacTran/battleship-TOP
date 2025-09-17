@@ -47,10 +47,22 @@ body {
     grid-row: 2/3;
 }
 
-.grid-container > div {
+.censor {
+    display: grid;
+    background-color: lightgrey;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    width: 450px;
+    height: 450px;
+    grid-column: 2/3;
+    grid-row: 2/3;
+}
+
+.grid-container > div, .censor > div {
     display: flex;
     border: 1px solid black;
-    font-size: 1rem;
+    font-size: 1.5rem;
+    text-shadow: 0px 1px 5px black;
     justify-content: center;
     align-items: center;
 }
@@ -72,6 +84,7 @@ body {
     font-size: 1rem;
     justify-content: center;
     align-items: center;
+    text-shadow: none;
 }
 
 .number-axis.option {
@@ -217,7 +230,7 @@ input:valid {
 }
 
 .carrier {
-    background-color: red;
+    background-color: brown;
 }
 
 .battleship {
@@ -270,16 +283,6 @@ input:valid {
     align-items: center;
 }
 
-.censor {
-    background-color: grey;
-    border: 2px solid black;
-    height: 450px; 
-    width: 450px;
-    position: relative;
-    grid-row: 2/3;
-    grid-column: 2/3;
-}
-
 .computer-hidden {
     background-color: grey;
 }
@@ -321,4 +324,12 @@ footer {
 
 .reset-button {
     font-size: 3rem;
+}
+
+.miss {
+    color: black;
+}
+
+.hit {
+    color:red;
 }

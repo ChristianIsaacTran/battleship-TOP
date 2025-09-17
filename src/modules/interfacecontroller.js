@@ -982,23 +982,158 @@ export default function interfacecontroller() {
 
             const censor = document.createElement("div");
             censor.setAttribute("class", "censor");
+
             const boardContainerP2 = document.querySelector(
                 ".board-container.player2",
             );
+
             boardContainerP2.appendChild(censor);
+
+            let rowCounter = 1;
+            let colCounter = 1;
+            for (let i = 1; i <= 100; i += 1) {
+                const gridCell = document.createElement("div");
+                gridCell.setAttribute(
+                    "class",
+                    `coord-${colCounter}-${rowCounter}`,
+                );
+                colCounter += 1;
+                if (i % 10 === 0) {
+                    rowCounter += 1;
+                    colCounter = 1;
+                }
+                censor.appendChild(gridCell);
+            }
+
+            const gridCellList = document.querySelectorAll(".censor > div");
+            const player2AttackHistory = gameControl
+                .getPlayer2()
+                .getGameBoard()
+                .getAttackHistory();
+            gridCellList.forEach((gridCell) => {
+                // where the strArr contains: ["coord", col, row]
+                const strArr = gridCell.getAttribute("class").split("-");
+                const xTemp = strArr[1];
+                const yTemp = strArr[2];
+                const combinedPositionString = `${xTemp},${yTemp}`;
+
+                if (player2AttackHistory.has(combinedPositionString)) {
+                    if (
+                        player2AttackHistory.get(combinedPositionString) ===
+                        "miss"
+                    ) {
+                        gridCell.setAttribute(
+                            "class",
+                            `${gridCell.getAttribute("class")} miss`,
+                        );
+                        gridCell.textContent = "X";
+                    } else {
+                        gridCell.setAttribute(
+                            "class",
+                            `${gridCell.getAttribute("class")} hit`,
+                        );
+                        gridCell.textContent = "X";
+                    }
+                }
+            });
         } else if (
             (currentTurnName === "Computer Player" ||
                 currentTurnName === player1Name) &&
             player2CompStatus === true
         ) {
             //  if computer player's turn, make all of the grid cells grey and don't reveal board
-            const gridCellList = document.querySelectorAll(
-                ".grid-container.player2 > div",
+            const compCensor = document.createElement("div");
+            compCensor.setAttribute("class", "censor");
+
+            const boardContainerP2 = document.querySelector(
+                ".board-container.player2",
             );
+
+            boardContainerP2.appendChild(compCensor);
+
+            let rowCounter = 1;
+            let colCounter = 1;
+            for (let i = 1; i <= 100; i += 1) {
+                const gridCell = document.createElement("div");
+                gridCell.setAttribute(
+                    "class",
+                    `coord-${colCounter}-${rowCounter}`,
+                );
+                colCounter += 1;
+                if (i % 10 === 0) {
+                    rowCounter += 1;
+                    colCounter = 1;
+                }
+                compCensor.appendChild(gridCell);
+            }
+
+            const gridCellList = document.querySelectorAll(".censor > div");
+
+            const player2AttackHistory = gameControl
+                .getPlayer2()
+                .getGameBoard()
+                .getAttackHistory();
             gridCellList.forEach((gridCell) => {
-                const currentClassTag = gridCell.getAttribute("class");
-                const computerClassTag = `${currentClassTag} computer-hidden`;
-                gridCell.setAttribute("class", computerClassTag);
+                // where the strArr contains: ["coord", col, row]
+                const strArr = gridCell.getAttribute("class").split("-");
+                const xTemp = strArr[1];
+                const yTemp = strArr[2];
+                const combinedPositionString = `${xTemp},${yTemp}`;
+
+                if (player2AttackHistory.has(combinedPositionString)) {
+                    if (
+                        player2AttackHistory.get(combinedPositionString) ===
+                        "miss"
+                    ) {
+                        gridCell.setAttribute(
+                            "class",
+                            `${gridCell.getAttribute("class")} miss`,
+                        );
+                        gridCell.textContent = "X";
+                    } else {
+                        gridCell.setAttribute(
+                            "class",
+                            `${gridCell.getAttribute("class")} hit`,
+                        );
+                        gridCell.textContent = "X";
+                    }
+                }
+            });
+
+            const player1AttackHistory = gameControl
+                .getPlayer1()
+                .getGameBoard()
+                .getAttackHistory();
+
+            const gridCellListP1 = document.querySelectorAll(
+                ".grid-container.player1 > div",
+            );
+            gridCellListP1.forEach((gridCell) => {
+                // where the strArr contains: ["coord", col, row]
+                const strArr = gridCell.getAttribute("class").split(" ");
+                const coordinateArr = strArr[0].split("-");
+                const xTemp = coordinateArr[1];
+                const yTemp = coordinateArr[2];
+                const combinedPositionString = `${xTemp},${yTemp}`;
+
+                if (player1AttackHistory.has(combinedPositionString)) {
+                    if (
+                        player1AttackHistory.get(combinedPositionString) ===
+                        "miss"
+                    ) {
+                        gridCell.setAttribute(
+                            "class",
+                            `${gridCell.getAttribute("class")} miss`,
+                        );
+                        gridCell.textContent = "X";
+                    } else {
+                        gridCell.setAttribute(
+                            "class",
+                            `${gridCell.getAttribute("class")} hit`,
+                        );
+                        gridCell.textContent = "X";
+                    }
+                }
             });
         } else if (currentTurnName === player2Name) {
             // if player 2 turn, the hide player 1
@@ -1017,6 +1152,54 @@ export default function interfacecontroller() {
                 ".board-container.player1",
             );
             boardContainerP1.appendChild(censor);
+
+            let rowCounter = 1;
+            let colCounter = 1;
+            for (let i = 1; i <= 100; i += 1) {
+                const gridCell = document.createElement("div");
+                gridCell.setAttribute(
+                    "class",
+                    `coord-${colCounter}-${rowCounter}`,
+                );
+                colCounter += 1;
+                if (i % 10 === 0) {
+                    rowCounter += 1;
+                    colCounter = 1;
+                }
+                censor.appendChild(gridCell);
+            }
+
+            const gridCellList = document.querySelectorAll(".censor > div");
+            const player1AttackHistory = gameControl
+                .getPlayer1()
+                .getGameBoard()
+                .getAttackHistory();
+            gridCellList.forEach((gridCell) => {
+                // where the strArr contains: ["coord", col, row]
+                const strArr = gridCell.getAttribute("class").split("-");
+                const xTemp = strArr[1];
+                const yTemp = strArr[2];
+                const combinedPositionString = `${xTemp},${yTemp}`;
+
+                if (player1AttackHistory.has(combinedPositionString)) {
+                    if (
+                        player1AttackHistory.get(combinedPositionString) ===
+                        "miss"
+                    ) {
+                        gridCell.setAttribute(
+                            "class",
+                            `${gridCell.getAttribute("class")} miss`,
+                        );
+                        gridCell.textContent = "X";
+                    } else {
+                        gridCell.setAttribute(
+                            "class",
+                            `${gridCell.getAttribute("class")} hit`,
+                        );
+                        gridCell.textContent = "X";
+                    }
+                }
+            });
         }
     }
 
@@ -1108,7 +1291,10 @@ export default function interfacecontroller() {
             attackForm.reset();
 
             // if computer player then replace attackY and attackX
-            if (gameControl.getCompAttack() !== undefined && gameControl.getCompAttack() !== null) {
+            if (
+                gameControl.getCompAttack() !== undefined &&
+                gameControl.getCompAttack() !== null
+            ) {
                 const computerAttack = gameControl.getCompAttack();
                 attackY = computerAttack[0];
                 attackX = computerAttack[1];
@@ -1177,7 +1363,10 @@ export default function interfacecontroller() {
                     newLi.textContent = `> ${player2Name} attacks ${player1Name} at [${attackY},${attackX}] and it's a ${attackResult}`;
                     attackHistoryBox.prepend(newLi);
                 }
-            }  
+
+                // re-render the hidden censor between boards
+                renderHidden();
+            }
 
             // reset compAttack if it has a value
             gameControl.setCompAttack(undefined);
