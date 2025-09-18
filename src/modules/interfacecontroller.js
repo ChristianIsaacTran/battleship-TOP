@@ -1326,7 +1326,6 @@ export default function interfacecontroller() {
                         .getPlayer2()
                         .getGameBoard()
                         .getAttackHistory();
-            
 
                     // generate hit or miss result
                     let attackResult;
@@ -1339,15 +1338,51 @@ export default function interfacecontroller() {
                         attackResult = "hit!";
                     }
 
+                    // add attack result to the attack history box
                     newLi.textContent = `> ${player1Name} attacks ${player2Name} at [${attackY},${attackX}] and it's a ${attackResult}`;
                     attackHistoryBox.prepend(newLi);
+
+                    // create another text message if ship has been sunk
+                    if (attackResult === "hit!" && gameStatus === false) {
+                        const attackedShip = player2AttackHistory.get(
+                            combinedPositionString,
+                        );
+                        const sunkStatus = attackedShip.isSunk();
+
+                        if (sunkStatus === true) {
+                            const sunkMessage = document.createElement("li");
+                            let foundSunkShip;
+                            // search within gridList for the attacked ship coordinates and detect what ship it is
+                            const gridCellList = document.querySelectorAll(".grid-container.player2 > div");
+                            gridCellList.forEach((gridCell) => {
+                                const strArr = gridCell
+                                    .getAttribute("class")
+                                    .split(" ");
+                                const coordinateArr = strArr[0].split("-");
+                                const coordinateX = coordinateArr[1];
+                                const coordinateY = coordinateArr[2];
+                                let numberY = gameControl.getPlayer1().getGameBoard().convertLetterToCoor(attackY);
+                                numberY = numberY.toString();
+
+                                // if the coordinate has been found, then extract the ship from it and add it to the message string
+                                if (
+                                    coordinateX === attackX &&
+                                    coordinateY === numberY
+                                ) {
+                                    foundSunkShip = strArr[1];
+                                }
+                            });
+
+                            sunkMessage.textContent = `> ${player1Name} has sunk a ${foundSunkShip}!`;
+                            attackHistoryBox.prepend(sunkMessage);
+                        }
+                    }
                 } else if (currentTurnName === player1Name) {
                     // after player 2 turn, then update history with player 2 attack history
                     const player1AttackHistory = gameControl
                         .getPlayer1()
                         .getGameBoard()
                         .getAttackHistory();
-            
 
                     // generate hit or miss result
                     let attackResult;
@@ -1360,8 +1395,45 @@ export default function interfacecontroller() {
                         attackResult = "hit!";
                     }
 
+                    // add attack result to the attack history box
                     newLi.textContent = `> ${player2Name} attacks ${player1Name} at [${attackY},${attackX}] and it's a ${attackResult}`;
                     attackHistoryBox.prepend(newLi);
+
+                    // create another text message if ship has been sunk
+                    if (attackResult === "hit!" && gameStatus === false) {
+                        const attackedShip = player1AttackHistory.get(
+                            combinedPositionString,
+                        );
+                        const sunkStatus = attackedShip.isSunk();
+
+                        if (sunkStatus === true) {
+                            const sunkMessage = document.createElement("li");
+                            let foundSunkShip;
+                            // search within gridList for the attacked ship coordinates and detect what ship it is
+                            const gridCellList = document.querySelectorAll(".grid-container.player1 > div");
+                            gridCellList.forEach((gridCell) => {
+                                const strArr = gridCell
+                                    .getAttribute("class")
+                                    .split(" ");
+                                const coordinateArr = strArr[0].split("-");
+                                const coordinateX = coordinateArr[1];
+                                const coordinateY = coordinateArr[2];
+                                let numberY = gameControl.getPlayer1().getGameBoard().convertLetterToCoor(attackY);
+                                numberY = numberY.toString();
+
+                                // if the coordinate has been found, then extract the ship from it and add it to the message string
+                                if (
+                                    coordinateX === attackX &&
+                                    coordinateY === numberY
+                                ) {
+                                    foundSunkShip = strArr[1];
+                                }
+                            });
+
+                            sunkMessage.textContent = `> ${player2Name} has sunk a ${foundSunkShip}!`;
+                            attackHistoryBox.prepend(sunkMessage);
+                        }
+                    }
                 }
 
                 // re-render the hidden censor between boards

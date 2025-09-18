@@ -52,3 +52,7 @@ note: I am going to convert the gamecontroller.js into a module that manages DOM
 game of battleship. This is to drive the game.
 
 (8/27/2025) - My current goal right now is to display the ship placement and rendered information on the DOM.
+
+(9/18/2025) - Implement an indicator that a ship is sunk in the attack history
+
+(9/18/2025) - fix rescaling issue with the border axis numbers and letters
