@@ -278,6 +278,7 @@ body {
     width: 900px;
     display: flex;
     align-items: center;
+    justify-content: space-around;
 }
 
 .name-group {
