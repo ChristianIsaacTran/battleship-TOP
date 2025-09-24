@@ -118,22 +118,16 @@ export default function interfacecontroller() {
     // generates a mini grid to display in the options menu to guide with making ship placement choices
     function generateMiniGrid(attachHTMLElement, addonClassTag = "") {
         const boardContainer = document.createElement("div");
-        const numberAxis = document.createElement("div");
-        const letterAxis = document.createElement("div");
         const gridContainer = document.createElement("div");
 
         if (addonClassTag === "") {
             boardContainer.setAttribute("class", "board-container");
-            numberAxis.setAttribute("class", "number-axis");
-            letterAxis.setAttribute("class", "letter-axis");
             gridContainer.setAttribute("class", "grid-container");
         } else {
             boardContainer.setAttribute(
                 "class",
                 `board-container ${addonClassTag}`,
             );
-            numberAxis.setAttribute("class", `number-axis ${addonClassTag}`);
-            letterAxis.setAttribute("class", `letter-axis ${addonClassTag}`);
             gridContainer.setAttribute(
                 "class",
                 `grid-container ${addonClassTag}`,
@@ -144,41 +138,52 @@ export default function interfacecontroller() {
         for (let i = 1; i <= 10; i += 1) {
             const numberDiv = document.createElement("div");
             numberDiv.textContent = i;
-            numberAxis.appendChild(numberDiv);
+            numberDiv.setAttribute("class", `number-axis-${i}`);
+            gridContainer.appendChild(numberDiv);
         }
 
         // add letter divs to letterAxis
         const ADiv = document.createElement("div");
+        ADiv.setAttribute("class", "A-letter-axis");
         ADiv.textContent = "A";
         const BDiv = document.createElement("div");
+        BDiv.setAttribute("class", "B-letter-axis");
         BDiv.textContent = "B";
         const CDiv = document.createElement("div");
+        CDiv.setAttribute("class", "C-letter-axis");
         CDiv.textContent = "C";
         const DDiv = document.createElement("div");
+        DDiv.setAttribute("class", "D-letter-axis");
         DDiv.textContent = "D";
         const EDiv = document.createElement("div");
+        EDiv.setAttribute("class", "E-letter-axis");
         EDiv.textContent = "E";
         const FDiv = document.createElement("div");
+        FDiv.setAttribute("class", "F-letter-axis");
         FDiv.textContent = "F";
         const GDiv = document.createElement("div");
+        GDiv.setAttribute("class", "G-letter-axis");
         GDiv.textContent = "G";
         const HDiv = document.createElement("div");
+        HDiv.setAttribute("class", "H-letter-axis");
         HDiv.textContent = "H";
         const IDiv = document.createElement("div");
+        IDiv.setAttribute("class", "I-letter-axis");
         IDiv.textContent = "I";
         const JDiv = document.createElement("div");
+        JDiv.setAttribute("class", "J-letter-axis");
         JDiv.textContent = "J";
 
-        letterAxis.appendChild(ADiv);
-        letterAxis.appendChild(BDiv);
-        letterAxis.appendChild(CDiv);
-        letterAxis.appendChild(DDiv);
-        letterAxis.appendChild(EDiv);
-        letterAxis.appendChild(FDiv);
-        letterAxis.appendChild(GDiv);
-        letterAxis.appendChild(HDiv);
-        letterAxis.appendChild(IDiv);
-        letterAxis.appendChild(JDiv);
+        gridContainer.appendChild(ADiv);
+        gridContainer.appendChild(BDiv);
+        gridContainer.appendChild(CDiv);
+        gridContainer.appendChild(DDiv);
+        gridContainer.appendChild(EDiv);
+        gridContainer.appendChild(FDiv);
+        gridContainer.appendChild(GDiv);
+        gridContainer.appendChild(HDiv);
+        gridContainer.appendChild(IDiv);
+        gridContainer.appendChild(JDiv);
 
         // loop to fill grid container
         let counter = 1;
@@ -193,10 +198,12 @@ export default function interfacecontroller() {
             }
         }
 
-        boardContainer.appendChild(numberAxis);
-        boardContainer.appendChild(letterAxis);
-        boardContainer.appendChild(gridContainer);
+        // add an empty div to take the place of the top left grid cell
+        const emptyCell = document.createElement("div");
+        emptyCell.setAttribute("class", "empty-cell");
+        gridContainer.appendChild(emptyCell);
 
+        boardContainer.appendChild(gridContainer);
         attachHTMLElement.appendChild(boardContainer);
     }
 
@@ -782,52 +789,59 @@ export default function interfacecontroller() {
         if (player1 === true && player2 === false) {
             const boardContainer = document.createElement("div");
             boardContainer.setAttribute("class", "board-container player1");
-            const numberAxis = document.createElement("div");
-            numberAxis.setAttribute("class", "number-axis player1");
-            const letterAxis = document.createElement("div");
-            letterAxis.setAttribute("class", "letter-axis player1");
             const gridContainer = document.createElement("div");
             gridContainer.setAttribute("class", "grid-container player1");
 
             // fill number and letter axis
             for (let j = 1; j <= 10; j += 1) {
                 const numberDiv = document.createElement("div");
+                numberDiv.setAttribute("class", `number-axis-${j}`);
                 numberDiv.textContent = j;
-                numberAxis.appendChild(numberDiv);
+                gridContainer.appendChild(numberDiv);
             }
 
             // add letter divs to letterAxis
             const ADiv = document.createElement("div");
+            ADiv.setAttribute("class", "A-letter-axis");
             ADiv.textContent = "A";
             const BDiv = document.createElement("div");
+            BDiv.setAttribute("class", "B-letter-axis");
             BDiv.textContent = "B";
             const CDiv = document.createElement("div");
+            CDiv.setAttribute("class", "C-letter-axis");
             CDiv.textContent = "C";
             const DDiv = document.createElement("div");
+            DDiv.setAttribute("class", "D-letter-axis");
             DDiv.textContent = "D";
             const EDiv = document.createElement("div");
+            EDiv.setAttribute("class", "E-letter-axis");
             EDiv.textContent = "E";
             const FDiv = document.createElement("div");
+            FDiv.setAttribute("class", "F-letter-axis");
             FDiv.textContent = "F";
             const GDiv = document.createElement("div");
+            GDiv.setAttribute("class", "G-letter-axis");
             GDiv.textContent = "G";
             const HDiv = document.createElement("div");
+            HDiv.setAttribute("class", "H-letter-axis");
             HDiv.textContent = "H";
             const IDiv = document.createElement("div");
+            IDiv.setAttribute("class", "I-letter-axis");
             IDiv.textContent = "I";
             const JDiv = document.createElement("div");
+            JDiv.setAttribute("class", "J-letter-axis");
             JDiv.textContent = "J";
 
-            letterAxis.appendChild(ADiv);
-            letterAxis.appendChild(BDiv);
-            letterAxis.appendChild(CDiv);
-            letterAxis.appendChild(DDiv);
-            letterAxis.appendChild(EDiv);
-            letterAxis.appendChild(FDiv);
-            letterAxis.appendChild(GDiv);
-            letterAxis.appendChild(HDiv);
-            letterAxis.appendChild(IDiv);
-            letterAxis.appendChild(JDiv);
+            gridContainer.appendChild(ADiv);
+            gridContainer.appendChild(BDiv);
+            gridContainer.appendChild(CDiv);
+            gridContainer.appendChild(DDiv);
+            gridContainer.appendChild(EDiv);
+            gridContainer.appendChild(FDiv);
+            gridContainer.appendChild(GDiv);
+            gridContainer.appendChild(HDiv);
+            gridContainer.appendChild(IDiv);
+            gridContainer.appendChild(JDiv);
 
             // fill player 1 grid with grid cells
             let rowCounter = 1;
@@ -846,59 +860,69 @@ export default function interfacecontroller() {
                 gridContainer.appendChild(gridCell);
             }
 
-            boardContainer.appendChild(numberAxis);
-            boardContainer.appendChild(letterAxis);
+            // add an empty div to take the place of the top left grid cell
+            const emptyCell = document.createElement("div");
+            emptyCell.setAttribute("class", "empty-cell");
+            gridContainer.appendChild(emptyCell);
+
             boardContainer.appendChild(gridContainer);
             attachHTMLElement.appendChild(boardContainer);
         } else if (player2 === true && player1 === false) {
             const boardContainer = document.createElement("div");
             boardContainer.setAttribute("class", "board-container player2");
-            const numberAxis = document.createElement("div");
-            numberAxis.setAttribute("class", "number-axis player2");
-            const letterAxis = document.createElement("div");
-            letterAxis.setAttribute("class", "letter-axis player2");
             const gridContainer = document.createElement("div");
             gridContainer.setAttribute("class", "grid-container player2");
 
             // fill number and letter axis
             for (let j = 1; j <= 10; j += 1) {
                 const numberDiv = document.createElement("div");
+                numberDiv.setAttribute("class", `number-axis-${j}`);
                 numberDiv.textContent = j;
-                numberAxis.appendChild(numberDiv);
+                gridContainer.appendChild(numberDiv);
             }
 
             // add letter divs to letterAxis
             const ADiv = document.createElement("div");
+            ADiv.setAttribute("class", "A-letter-axis");
             ADiv.textContent = "A";
             const BDiv = document.createElement("div");
+            BDiv.setAttribute("class", "B-letter-axis");
             BDiv.textContent = "B";
             const CDiv = document.createElement("div");
+            CDiv.setAttribute("class", "C-letter-axis");
             CDiv.textContent = "C";
             const DDiv = document.createElement("div");
+            DDiv.setAttribute("class", "D-letter-axis");
             DDiv.textContent = "D";
             const EDiv = document.createElement("div");
+            EDiv.setAttribute("class", "E-letter-axis");
             EDiv.textContent = "E";
             const FDiv = document.createElement("div");
+            FDiv.setAttribute("class", "F-letter-axis");
             FDiv.textContent = "F";
             const GDiv = document.createElement("div");
+            GDiv.setAttribute("class", "G-letter-axis");
             GDiv.textContent = "G";
             const HDiv = document.createElement("div");
+            HDiv.setAttribute("class", "H-letter-axis");
             HDiv.textContent = "H";
             const IDiv = document.createElement("div");
+            IDiv.setAttribute("class", "I-letter-axis");
             IDiv.textContent = "I";
             const JDiv = document.createElement("div");
+            JDiv.setAttribute("class", "J-letter-axis");
             JDiv.textContent = "J";
 
-            letterAxis.appendChild(ADiv);
-            letterAxis.appendChild(BDiv);
-            letterAxis.appendChild(CDiv);
-            letterAxis.appendChild(DDiv);
-            letterAxis.appendChild(EDiv);
-            letterAxis.appendChild(FDiv);
-            letterAxis.appendChild(GDiv);
-            letterAxis.appendChild(HDiv);
-            letterAxis.appendChild(IDiv);
-            letterAxis.appendChild(JDiv);
+            gridContainer.appendChild(ADiv);
+            gridContainer.appendChild(BDiv);
+            gridContainer.appendChild(CDiv);
+            gridContainer.appendChild(DDiv);
+            gridContainer.appendChild(EDiv);
+            gridContainer.appendChild(FDiv);
+            gridContainer.appendChild(GDiv);
+            gridContainer.appendChild(HDiv);
+            gridContainer.appendChild(IDiv);
+            gridContainer.appendChild(JDiv);
 
             // fill player 2 grid with grid cells
             let rowCounter = 1;
@@ -917,8 +941,11 @@ export default function interfacecontroller() {
                 gridContainer.appendChild(gridCell);
             }
 
-            boardContainer.appendChild(numberAxis);
-            boardContainer.appendChild(letterAxis);
+            // add an empty div to take the place of the top left grid cell
+            const emptyCell = document.createElement("div");
+            emptyCell.setAttribute("class", "empty-cell");
+            gridContainer.appendChild(emptyCell);
+
             boardContainer.appendChild(gridContainer);
             attachHTMLElement.appendChild(boardContainer);
         }
@@ -1353,7 +1380,9 @@ export default function interfacecontroller() {
                             const sunkMessage = document.createElement("li");
                             let foundSunkShip;
                             // search within gridList for the attacked ship coordinates and detect what ship it is
-                            const gridCellList = document.querySelectorAll(".grid-container.player2 > div");
+                            const gridCellList = document.querySelectorAll(
+                                ".grid-container.player2 > div",
+                            );
                             gridCellList.forEach((gridCell) => {
                                 const strArr = gridCell
                                     .getAttribute("class")
@@ -1361,7 +1390,10 @@ export default function interfacecontroller() {
                                 const coordinateArr = strArr[0].split("-");
                                 const coordinateX = coordinateArr[1];
                                 const coordinateY = coordinateArr[2];
-                                let numberY = gameControl.getPlayer1().getGameBoard().convertLetterToCoor(attackY);
+                                let numberY = gameControl
+                                    .getPlayer1()
+                                    .getGameBoard()
+                                    .convertLetterToCoor(attackY);
                                 numberY = numberY.toString();
 
                                 // if the coordinate has been found, then extract the ship from it and add it to the message string
@@ -1410,7 +1442,9 @@ export default function interfacecontroller() {
                             const sunkMessage = document.createElement("li");
                             let foundSunkShip;
                             // search within gridList for the attacked ship coordinates and detect what ship it is
-                            const gridCellList = document.querySelectorAll(".grid-container.player1 > div");
+                            const gridCellList = document.querySelectorAll(
+                                ".grid-container.player1 > div",
+                            );
                             gridCellList.forEach((gridCell) => {
                                 const strArr = gridCell
                                     .getAttribute("class")
@@ -1418,7 +1452,10 @@ export default function interfacecontroller() {
                                 const coordinateArr = strArr[0].split("-");
                                 const coordinateX = coordinateArr[1];
                                 const coordinateY = coordinateArr[2];
-                                let numberY = gameControl.getPlayer1().getGameBoard().convertLetterToCoor(attackY);
+                                let numberY = gameControl
+                                    .getPlayer1()
+                                    .getGameBoard()
+                                    .convertLetterToCoor(attackY);
                                 numberY = numberY.toString();
 
                                 // if the coordinate has been found, then extract the ship from it and add it to the message string
